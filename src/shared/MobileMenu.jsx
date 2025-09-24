@@ -1,43 +1,41 @@
-import { Avatar } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Link } from 'lucide-react';
+
+
+import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import React from 'react';
 
-const MobileMenu = ({darkmode,setDarkmode}) => {
+const MobileMenu = ({mobileMenuOpen,darkmode,setDarkmode,setMobileMenuOpen}) => {
     return (
-   <div >
-          <Link href="/news" className="hover:text-red-500 text-gray-800 dark:text-white">News</Link>
-          <div>
-            <span className="text-gray-800 dark:text-white font-semibold">Services</span>
-            <ul className="ml-4 mt-2 flex flex-col space-y-1 text-gray-600 dark:text-gray-300">
-              <li><Link href="/services/web_development">Web Development</Link></li>
-              <li><Link href="/services/Graphic_Design">Graphics Design</Link></li>
-              <li><Link href="/services/Digital_Marketting">Digital Marketing</Link></li>
-              <li><Link href="/services/Business_Learning">Business Learning</Link></li>
-            </ul>
-          </div>
-          <Link href="/about" className="hover:text-red-500 text-gray-800 dark:text-white">About</Link>
-          <Link href="/contact" className="hover:text-red-500 text-gray-800 dark:text-white">Contact</Link>
+      <nav className="flex items-center justify-between w-10/12 mx-auto py-4">
 
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-800 dark:text-white">Dark Mode</span>
-              <Switch checked={darkmode} onCheckedChange={setDarkmode} />
-            </div>
-            {userLoggedIn ? (
-              <Avatar>
-                <AvatarImage src="https://i.pravatar.cc/40" />
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-            ) : (
-              <div className="flex space-x-2">
-                <Button variant="default"><Link href="/login">Login</Link></Button>
-                <Button variant="outline"><Link href="/register">Register</Link></Button>
-              </div>
-            )}
-          </div>
-        </div>
+  {/* Mobile Hamburger (left) */}
+  <div className="lg:hidden order-1">
+    <Button variant="ghost" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+      <IoMdMenu size={24} className="text-gray-800 dark:text-white" />
+    </Button>
+  </div>
+
+  {/* Logo (center) */}
+  <div className="text-xl font-bold text-gray-800 dark:text-white order-2 mx-auto">
+    <Link href="/">QuickMart</Link>
+  </div>
+
+  {/* Right: DarkMode + Login/Profile (right) */}
+  <div className="flex items-center space-x-2 order-3 lg:order-2">
+    <Switch checked={darkmode} onCheckedChange={setDarkmode} />
+    {userLoggedIn ? (
+      <Avatar>
+        <AvatarImage src="https://i.pravatar.cc/40" />
+        <AvatarFallback>U</AvatarFallback>
+      </Avatar>
+    ) : (
+      <Button variant="default"><Link href="/login">Login</Link></Button>
+    )}
+  </div>
+
+
+</nav>
     );
 };
 

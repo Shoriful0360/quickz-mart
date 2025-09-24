@@ -41,6 +41,43 @@ function Navbar() {
     }
   }, [darkmode])
 
+ const link = <>
+  <NavigationMenuLink 
+    href="/"
+    className={`hover:text-red-500 ${pathname === "/" ? "text-red-500 font-bold und" : "text-gray-800 dark:text-white"}`}
+  >
+ Home
+  </NavigationMenuLink>
+  <NavigationMenuLink 
+    href="/page/atar"
+    className={`hover:text-red-500 ${pathname === "/page/atar" ? "text-red-500 font-bold und" : "text-gray-800 dark:text-white"}`}
+  >
+    Atar
+  </NavigationMenuLink>
+
+  <NavigationMenuLink 
+    href="/page/panjabi"
+    className={`hover:text-red-500 ${pathname === "/page/panjabi" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
+  >
+    Panjabi
+  </NavigationMenuLink>
+
+  <NavigationMenuLink 
+    href="/page/shirt"
+    className={`hover:text-red-500 ${pathname === "/page/shirt" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
+  >
+    Shirt
+  </NavigationMenuLink>
+
+  <NavigationMenuLink 
+    href="/page/trouser"
+    className={`hover:text-red-500 ${pathname === "/page/trouser" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
+  >
+    Pant & Trouser
+  </NavigationMenuLink>
+</>
+
+
   return (
     <header className="shadow-xl bg-white dark:bg-gray-900">
       <nav className="flex items-center justify-between w-10/12 mx-auto py-4">
@@ -54,41 +91,7 @@ function Navbar() {
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
             <NavigationMenuItem className="flex items-center gap-4">
-              <NavigationMenuLink
-                href="/news"
-                className={`hover:text-red-500 ${pathname === "/news" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-              >
-                News
-              </NavigationMenuLink>
-
-              <NavigationMenuLink
-                href="/services"
-                className={`hover:text-red-500 ${pathname === "/services" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-              >
-                <NavigationMenuTrigger>Services</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="bg-white dark:bg-gray-800 shadow-md px-5 py-4 space-y-2 rounded-md text-gray-600 dark:text-gray-300">
-                    <li><NavigationMenuLink href="/services/web_development">Web Development</NavigationMenuLink></li>
-                    <li><NavigationMenuLink href="/services/Graphic_Design">Graphics Design</NavigationMenuLink></li>
-                    <li><NavigationMenuLink href="/services/Digital_Marketting">Digital Marketing</NavigationMenuLink></li>
-                    <li><NavigationMenuLink href="/services/Business_Learning">Business Learning</NavigationMenuLink></li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuLink>
-
-              <NavigationMenuLink
-                href="/about"
-                className={`hover:text-red-500 ${pathname === "/about" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-              >
-                About
-              </NavigationMenuLink>
-
-              <NavigationMenuLink
-                href="/contact"
-                className={`hover:text-red-500 ${pathname === "/contact" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-              >
-                Contact
-              </NavigationMenuLink>
+              {link}
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -129,10 +132,7 @@ function Navbar() {
           <div>
             <span className="text-gray-800 dark:text-white font-semibold">Services</span>
             <ul className="ml-4 mt-2 flex flex-col space-y-1 text-gray-600 dark:text-gray-300">
-              <li><Link href="/services/web_development">Web Development</Link></li>
-              <li><Link href="/services/Graphic_Design">Graphics Design</Link></li>
-              <li><Link href="/services/Digital_Marketting">Digital Marketing</Link></li>
-              <li><Link href="/services/Business_Learning">Business Learning</Link></li>
+      {link}
             </ul>
           </div>
           <Link href="/about" className="hover:text-red-500 text-gray-800 dark:text-white">About</Link>
