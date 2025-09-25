@@ -1,4 +1,5 @@
 // components/ProductsSection.js
+import Image from "next/image"
 import Link from "next/link"
 
 export default function ProductsSection() {
@@ -15,7 +16,14 @@ export default function ProductsSection() {
         <div className="grid md:grid-cols-4 gap-8">
           {products.map((p, i) => (
             <div key={i} className="bg-white dark:bg-gray-900 rounded-lg shadow hover:shadow-lg overflow-hidden transition">
-              <img src={p.img} alt={p.name} className="w-full h-64 object-cover" />
+            
+<Image
+  src="https://images.unsplash.com/photo-1532284166236-8a7bb97578e9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGFuamFiaXxlbnwwfHwwfHx8MA%3D%3D"
+  alt="Shirt"
+  width={300}
+  height={300}
+  className="rounded-lg"
+/>
               <div className="p-4 text-center">
                 <h3 className="font-bold text-lg">{p.name}</h3>
                 <p className="text-red-500 font-bold">{p.price}</p>
