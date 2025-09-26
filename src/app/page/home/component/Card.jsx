@@ -2,8 +2,10 @@
 
 import Image from "next/image"
 import { Star } from "lucide-react"   // যদি icon দরকার হয়, npm i lucide-react install করবে
+import Link from "next/link"
 
-export default function ProductCard({ img, discount, name, rating, price, title }) {
+export default function ProductCard({detail}) {
+ const { img, discount, name, rating, price, title ,id}=detail
   return (
     <div className="border rounded-xl shadow-md overflow-hidden hover:shadow-lg transition group">
       {/* Image Section */}
@@ -38,10 +40,12 @@ export default function ProductCard({ img, discount, name, rating, price, title 
 
       {/* Actions */}
 <div className="flex items-center justify-end gap-3 mt-4">
+
+<Link href={`/page/details/${id}`} >
   <button className="my-button">
     Details
-  </button>
-  <button className="my-button-green">
+  </button></Link>
+  <button className="my-button-green " >
     Buy
   </button>
 </div>
