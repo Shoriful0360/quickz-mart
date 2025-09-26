@@ -1,9 +1,10 @@
 
 import FeaturesSection from "./page/home/component/FeatureSection";
 import ProductsSection from "./page/home/component/ProductsSection";
-import TestimonialsSection from "./page/home/component/TestimonialsSection";
 import Slide from "./page/home/component/Slide";
 import CategorySection from "./page/home/component/Category";
+import ReviewCard from "./page/home/component/testimonial/ReviewCard";
+
 
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
       <div className="divider text-2xl font-bold">Shop by Category</div>
       <CategorySection/>
     <ProductsSection/>
-    <TestimonialsSection/>
+    <ReviewCard/>
     </div>
   );
 }
