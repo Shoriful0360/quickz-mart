@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
+import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +25,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header>
-          <Navbar/>
-        </header>
+      <NavigationMenu><Navbar/></NavigationMenu>
        <main className="min-h-[calc(100vh-300px)]">
          {children}
        </main>

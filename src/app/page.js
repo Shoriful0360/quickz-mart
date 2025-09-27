@@ -14,10 +14,11 @@ export default function Home() {
 <div className="h-[400] md:h-[600] lg:h-[700] xl:h-[750]">
   <Slide />
 </div>
-    <FeaturesSection/>
+
       <div className="divider text-2xl font-bold">Shop by Category</div>
       <CategorySection/>
     <ProductsSection/>
+          <FeaturesSection/>
     <ReviewCard/>
     </div>
   );

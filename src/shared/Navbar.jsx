@@ -110,7 +110,7 @@ function Navbar() {
             </Avatar>
           ) : (
             <>
-              <Button variant="default"><Link href="/login">Login</Link></Button>
+              <Button variant="default"><Link href="/page/authentication/Login">Login</Link></Button>
               {/* <Button variant="outline"><Link href="/register">Register</Link></Button> */}
             </>
           )}
