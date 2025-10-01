@@ -1,8 +1,11 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
 import { NavigationMenu } from "@radix-ui/react-navigation-menu";
+import ReduxProvider from "./page/redux/ReduxProvider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,17 +25,23 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+   <ReduxProvider>
+   <body
+        className={`flex flex-col min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-      <NavigationMenu><Navbar/></NavigationMenu>
-       <main className="min-h-[calc(100vh-300px)]">
+        <NavigationMenu>
+        <Navbar/>
+        </NavigationMenu>
+       <main className="flex-1">
          {children}
        </main>
        <footer>
         <Footer/>
        </footer>
+      
+  
       </body>
+   </ReduxProvider>
     </html>
   );
 }

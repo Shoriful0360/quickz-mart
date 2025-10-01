@@ -88,6 +88,36 @@ export default function SignUpPage() {
                   <span className="text-red-500">Email is required</span>
                 )}
               </div>
+              {/* phone */}
+              <div className="grid gap-2">
+                <Label htmlFor="email" className="text-white">
+                  Phone
+                </Label>
+                <Input
+                  id="phone"
+                  {...register("phone", { required: 'Number  is required' ,
+                    minLength:{
+                      value:11,
+                      message:"Phone number must be 11 digits"
+                    },
+                    maxLength:{
+                      value:11,
+                      message:"Phone number must be 11 digits"
+                    },
+                    pattern:{
+                      value:/^[0-9]{11}$/,
+                      message:"Invalid phone number"
+                    }
+                  })}
+                  type="number"
+                  placeholder="01307177507"
+                  className="bg-white/30 border-white/40 text-white placeholder:text-gray-200"
+                />
+                {errors.phone && (
+                  <span className="text-red-500">{errors.phone.message}</span>
+                )}
+            
+              </div>
 
               {/* Password */}
               <div className="grid gap-2">

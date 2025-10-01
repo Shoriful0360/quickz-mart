@@ -14,6 +14,7 @@ import { GoPlus } from "react-icons/go";
 import { Button } from "@/components/ui/button";
 import ProductCard from "../../home/component/Card";
 import ProductsSection from "../../home/component/ProductsSection";
+import Link from "next/link";
 
 const images = [
   {
@@ -155,9 +156,11 @@ const handleCount = (value) => {
   </button>
 
   {/* Buy Now Button */}
-  <button className="flex-1 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
+ <Link href={'/page/checkout'}> 
+ <button className="flex-1 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
     Buy Now
   </button>
+  </Link>
 </div>
           </div>
 
