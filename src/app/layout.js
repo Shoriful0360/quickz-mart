@@ -25,10 +25,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-   <ReduxProvider>
+ 
    <body
         className={`flex flex-col min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
+          <ReduxProvider>
         <NavigationMenu>
         <Navbar/>
         </NavigationMenu>
@@ -40,8 +41,8 @@ export default function RootLayout({ children }) {
        </footer>
       
   
-      </body>
    </ReduxProvider>
+      </body>
     </html>
   );
 }

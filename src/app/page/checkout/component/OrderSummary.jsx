@@ -17,8 +17,24 @@ export default function OrderSummary() {
   const subtotal = order.product.price * order.quantity;
   const vatAmount = subtotal * order.vatRate;
   const totalOrder = subtotal + order.shippingCharge + vatAmount - order.discount;
-    
-      
+
+  
+const handleQuantity = (value) => {
+  if(value === "-") {
+    setOrder(prev => ({
+      ...prev,
+      quantity: Math.max(prev.quantity - 1, 1) // quantity কখনো 0-এর নিচে যাবে না
+    }));
+  }
+
+  if(value === "+") {
+    setOrder(prev => ({
+      ...prev,
+      quantity: prev.quantity + 1
+    }));
+  }
+}
+  
   return (
     <div>
         
@@ -34,9 +50,9 @@ export default function OrderSummary() {
               <p className="font-medium">{order.product.name}</p>
               <p>৳ {order.product.price}</p>
               <p>Qty:
-                <span onClick={()=>handleQuantity('-')} className='border px-2'>-</span>
+                <span onClick={()=>handleQuantity('-')}  className='border px-2 cursor-pointer '>-</span>
                 <span className='border px-2'>{order?.quantity}</span>
-                <span onClick={()=>handleQuantity('-')} className='border px-2'>+</span>
+                <span onClick={()=>handleQuantity('+')} className='border px-2 cursor-pointer'>+</span>
               </p>
             </div>
           </div>

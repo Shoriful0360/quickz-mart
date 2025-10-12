@@ -20,9 +20,12 @@ const ReviewCard = () => {
 
                     {/* responsive cart */}
                 <Marquee 
+                autoFill
+                pauseOnHover
+                
                 className="py-20"
                 >
-                       <div className="relative bg-gradient-to-r from-purple-500 via-pink-400 to-orange-400 text-white shadow-2xl rounded-2xl border-2 border-white/30 p-6 max-w-md  text-center ">
+                       <div className="relative bg-gradient-to-r mr-4 from-purple-500 via-pink-400 to-orange-400 text-white shadow-2xl rounded-2xl border-2 border-white/30 p-6 max-w-md  text-center ">
       {/* Glow effect */}
       <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-2xl"></div>
 

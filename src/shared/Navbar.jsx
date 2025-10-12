@@ -15,13 +15,15 @@ import Link from "next/link"
 import { IoMdMenu } from "react-icons/io"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 function Navbar() {
   const pathname = usePathname()
   const [darkmode, setDarkmode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userLoggedIn, setUserLoggedIn] = useState(false) // example state
-
+  const  user  = useSelector((state) => state.auth.user);
+  console.log('user',user)
   // Load theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme")

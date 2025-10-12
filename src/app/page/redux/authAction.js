@@ -1,7 +1,7 @@
 import { auth } from "@/app/fairebase/firebase.init"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { setUser } from "./slice";
-import { useDispatch } from "react-redux";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { setLoading, setUser } from "./slice";
+
 
 
 
@@ -9,13 +9,18 @@ import { useDispatch } from "react-redux";
 
 // register
 
-export const registerUser=(email,password)=>async(dispatch)=>{
-    dispatch(setL)
+export const registerUser=(name,email,password,phone)=>async(dispatch)=>{
+    dispatch(setLoading(true))
     try {
         const userCredential=await createUserWithEmailAndPassword(auth,email,password)
         const user=userCredential.user;
-        dispatch(setUser({name:user.displayName || "",email:user.email}))
+    //   update display name
+    await updateProfile(user,{displayName:name})
+
+        dispatch(setUser({name,email,phone}))
     } catch (error) {
         console.log("Error registering",error.message)
     }
 }
+
+// 

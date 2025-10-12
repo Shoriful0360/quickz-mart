@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../redux/authAction";
 
 export default function SignUpPage() {
   const {
@@ -21,12 +23,14 @@ export default function SignUpPage() {
     watch,
     formState: { errors },
   } = useForm();
-
+const dispatch=useDispatch()
   // watch password field to compare with confirm password
   const password = watch("password");
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    console.log('data',data)
+    
+    dispatch(registerUser(data.name,data.email,data.password,data.phone))
   };
 
   return (
