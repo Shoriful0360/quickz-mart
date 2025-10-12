@@ -1,6 +1,7 @@
 import { auth } from "@/app/fairebase/firebase.init"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { setLoading, setUser } from "./slice";
+import { createUserWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { logout, setLoading, setUser } from "./slice";
+
 
 
 
@@ -14,8 +15,11 @@ export const registerUser=(name,email,password,phone)=>async(dispatch)=>{
     try {
         const userCredential=await createUserWithEmailAndPassword(auth,email,password)
         const user=userCredential.user;
-    //   update display name
-    await updateProfile(user,{displayName:name})
+      // ✅ displayName update
+    await updateProfile(user, { displayName: name, phoneNumber: phone });
+
+    // ✅ Reload user info
+    await user.reload()
 
         dispatch(setUser({name,email,phone}))
     } catch (error) {
@@ -23,4 +27,16 @@ export const registerUser=(name,email,password,phone)=>async(dispatch)=>{
     }
 }
 
-// 
+
+//  Logout user
+export const logOutUser=()=>async(dispatch)=>{
+   try {
+    dispatch(setLoading(true))
+    await signOut(auth)
+    dispatch(logout())
+   } catch (error) {
+    console.error('logout error',error.message )
+   }finally{
+    dispatch(setLoading(false))
+   }
+}

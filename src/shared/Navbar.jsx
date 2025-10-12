@@ -15,14 +15,16 @@ import Link from "next/link"
 import { IoMdMenu } from "react-icons/io"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { logOutUser } from "@/app/page/redux/authAction"
 
 function Navbar() {
   const pathname = usePathname()
   const [darkmode, setDarkmode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [userLoggedIn, setUserLoggedIn] = useState(false) // example state
+const dispatch=useDispatch()
   const  user  = useSelector((state) => state.auth.user);
+
   console.log('user',user)
   // Load theme from localStorage
   useEffect(() => {
@@ -105,11 +107,13 @@ function Navbar() {
             <Switch checked={darkmode} onCheckedChange={setDarkmode} />
           </div>
 
-          {userLoggedIn ? (
-            <Avatar>
-              <AvatarImage src="https://i.pravatar.cc/40" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+          {user ? (
+           
+         
+               <Button 
+               onClick={()=>dispatch(logOutUser())}
+               variant="default">logout</Button>
+            
           ) : (
             <>
               <Button variant="default"><Link href="/page/authentication/Login">Login</Link></Button>

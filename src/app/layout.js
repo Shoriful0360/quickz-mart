@@ -5,6 +5,7 @@ import Navbar from "@/shared/Navbar";
 import Footer from "@/shared/Footer";
 import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 import ReduxProvider from "./page/redux/ReduxProvider";
+import AuthObserve from "./page/redux/AuthObserve";
 
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
         className={`flex flex-col min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
           <ReduxProvider>
+            <AuthObserve/>
         <NavigationMenu>
         <Navbar/>
         </NavigationMenu>
