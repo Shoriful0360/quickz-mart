@@ -1,5 +1,5 @@
 import { auth } from "@/app/fairebase/firebase.init"
-import { createUserWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
 import { logout, setLoading, setUser } from "./slice";
 
 
@@ -24,6 +24,8 @@ export const registerUser=(name,email,password,phone)=>async(dispatch)=>{
         dispatch(setUser({name,email,phone}))
     } catch (error) {
         console.log("Error registering",error.message)
+    }finally{
+        dispatch(setLoading(false))
     }
 }
 
@@ -39,4 +41,28 @@ export const logOutUser=()=>async(dispatch)=>{
    }finally{
     dispatch(setLoading(false))
    }
+}
+
+// login
+export const logIn=(email,password)=>async(dispatch)=>{
+
+    
+    try {
+       dispatch(setLoading(true)) 
+      const user=await signInWithEmailAndPassword(auth,email,password)
+    const firebaseUser = userCredential.user;
+
+    // map Firebase user to your Redux state shape
+    dispatch(setUser({
+      name: firebaseUser.displayName || "",
+      email: firebaseUser.email,
+      phone: firebaseUser.phoneNumber || ""
+    }));
+
+    console.log('Logged in user:', firebaseUser);
+    } catch (error) {
+        console.error(error.message)
+    }finally{
+        dispatch(setLoading(false))
+    }
 }

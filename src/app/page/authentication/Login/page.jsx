@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,8 +12,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { useDispatch } from "react-redux"
+import { logIn } from "../../redux/authAction"
 
 export default function Login() {
+  const dispatch=useDispatch()
+  // handle login
+  const handleLogin=async(e)=>{
+e.preventDefault()
+const email=e.target.email.value;
+const password=e.target.password.value;
+ dispatch(logIn(email,password))
+  }
   return (
     <div className=" min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm mx-auto">
@@ -26,11 +37,12 @@ export default function Login() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
+              name='email'
                 id="email"
                 type="email"
                 placeholder="m@example.com"
@@ -47,19 +59,24 @@ export default function Login() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input name='password' id="password" type="password" required />
             </div>
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
+            <div>
+                 <CardFooter className="flex-col gap-2 w-full">
         <Button type="submit" className="w-full">
           Login
         </Button>
-        <Button variant="outline" className="w-full">
+      
+      </CardFooter>
+            </div>
+          </div>
+           
+        </form>
+          <Button variant="outline" className="w-full mt-2">
           Login with Google
         </Button>
-      </CardFooter>
+      </CardContent>
+  
     </Card>
     </div>
   )

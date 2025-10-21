@@ -24,13 +24,22 @@ const images = [
   }
 ]
 function page() {
-  const [size,setSize]=useState()
   const imgRef = useRef(null);
   const [zoomStyle, setZoomStyle] = useState({});
   const [url, setUrl] = useState(
     'https://api.believerssign.com.bd/public/product/sKoSvgmy-FeuwI7rHZx.jpg'
   )
-const[count,setCount]=useState(1)
+
+  const[products,setProducts]=useState({
+    id: "SKU-B0123",
+    name: "Box Office News!",
+    price: 400,
+    oldPrice: 1000,
+    size: "",
+    quantity: 1,
+    image: images[0].img,
+  })
+
   const handleMouseMove = (e) => {
     const rect = imgRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -42,19 +51,48 @@ const[count,setCount]=useState(1)
     });
   };
 
+
   const handleMouseLeave = () => {
     setZoomStyle({ transform: "scale(1)" });
   };
 
 
-// function
-const handleCount = (value) => {
-  if (value === '-' && count > 1) {
-    setCount(count - 1); // এক ধাপ কমাবে
-  } else if (value === '+') {
-    setCount(count + 1); // এক ধাপ বাড়াবে
+  // handle change
+  const handleChange=(key,value)=>{
+    setProducts((prev)=>({...prev,[key]:value}))
   }
+
+// function
+const handleCount = (type) => {
+  setProducts((prev)=>{
+    let newQuantity=prev.quantity;
+    if(type==='-'&& prev.quantity>1) newQuantity=prev.quantity-1;
+    if(type==='+') newQuantity=prev.quantity + 1;
+    
+    // total price
+    const newPrice=prev.price * newQuantity;
+    return {
+      ...prev,
+      quantity:newQuantity,
+      price:newPrice
+    }
+  })
+  
 };
+
+// add to cart local storage
+const handleAddToCart=()=>{
+  const cart=JSON.parse(localStorage.getItem('cart')) || []
+  const isexisting=cart.find((item)=>item.id===products.id && item.size===products.size)
+  if(isexisting){
+ alert("✅ all ready Added to cart!");
+  }else{
+    cart.push(products)
+  }
+  localStorage.setItem('cart',JSON.stringify(cart))
+      alert("✅ Added to cart!");
+
+}
 
   return (
     <div className="max-w-7xl mx-auto mt-10 space-y-10">
@@ -126,32 +164,35 @@ const handleCount = (value) => {
               Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
               quasi. In deleniti eaque aut repudiandae et a id nisi.
             </p>
-            <p>Size
-              <br /><br />
-              <span onClick={()=>setSize('m')} className={`border cursor-pointer  ml-2 px-4 lg:px-10 py-2 text-center ${size==='m'?'bg-black text-white':""} border-black`}>
-                M
+            <p>Size :    </p>
+              
+                <div>
+            {["m", "l", "xl", "xxl"].map((s) => (
+              <span
+                key={s}
+                onClick={() => handleChange("size", s)}
+                className={`border cursor-pointer ml-2 px-4 py-2 text-center ${
+                  products.size === s ? "bg-black text-white" : ""
+                } border-black`}
+              >
+                {s.toUpperCase()}
               </span>
-              <span onClick={()=>setSize('l')} className={`border  cursor-pointer ml-2 px-4 lg:px-10 py-2 text-center ${size==='l'?'bg-black text-white':""} border-black`}>
-                L
-              </span>
-              <span onClick={()=>setSize('xl')} className={`border ml-2 cursor-pointer  px-4 lg:px-10 py-2 text-center ${size==='xl'?'bg-black text-white':""} border-black`}>
-                XL
-              </span>
-              <span onClick={()=>setSize('xxl')} className={`border ml-2 cursor-pointer  px-4 lg:px-10 py-2 text-center ${size==='xxl'?'bg-black text-white':""} border-black`}>
-                XXL
-              </span>
-            </p>
+            ))}
+          </div>
+        
            <p>Quantity:</p>
            <div>
              <button onClick={()=>handleCount('-')} className="border px-5 text-2xl cursor-pointer py-3 ">-</button>
-             <button  className="border px-5 text-2xl cursor-pointer py-3 ">{count}</button>
+             <button  className="border px-5 text-2xl cursor-pointer py-3 ">{products.quantity}</button>
              <button onClick={()=>handleCount('+')} className="border px-5 text-2xl cursor-pointer py-3 ">+</button>
            </div>
            <div className="divider"></div>
            {/* button */}
          <div className="flex gap-4 ">
   {/* Add to Cart Button */}
-  <button className="flex-1  cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
+  <button 
+  onClick={handleAddToCart}
+  className="flex-1  cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
     Add to Cart
   </button>
 
