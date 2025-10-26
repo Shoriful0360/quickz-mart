@@ -10,7 +10,7 @@ export default function AuthObserve() {
     useEffect(()=>{
         const unsubscribe=onAuthStateChanged(auth,(currentUser)=>{
             if(currentUser?.email){
-                console.log('name',currentUser)
+         
                 // user logged in
                 dispatch(setUser({
                     name:currentUser.displayName,

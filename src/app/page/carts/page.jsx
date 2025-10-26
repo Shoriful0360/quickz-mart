@@ -4,31 +4,29 @@ import { useCart } from "@/app/hook/useCart";
 import { useState, useEffect } from "react";
 
 const CartPage = () => {
-  // Example cart item (replace with localStorage or useCart hook)
-  const carts=useCart()
-  const [cartItems, setCartItems] = useState(carts);
+  const cartsFromStorage=JSON.parse(localStorage.getItem('cart')) || []
+  const [carts,setCarts]=useState(cartsFromStorage)
+
 
   // Quantity increase
-//   const increaseQty = (id) => {
-//     const updatedCart = carts.map(item => {
-//       if(item.id === id){
-//         return {...item, quantity: item.quantity + 1};
-//       }
-//       return item;
-//     });
-//     setCartItems(updatedCart);
-//   }
+  const increaseQty = (id) => {
+    const updatedCart = carts.map(item => {
+      if(item.id === id){
+        return {...item, quantity: item.quantity + 1};
+      }
+      return item;
+    });
+    setCarts(updatedCart);
+  }
 
   // Quantity decrease
-//   const decreaseQty = (id) => {
-//     const updatedCart = cartItems.map(item => {
-//       if(item.id === id && item.quantity > 1){
-//         return {...item, quantity: item.quantity - 1};
-//       }
-//       return item;
-//     });
-//     setCartItems(updatedCart);
-//   }
+  const decreaseQty = (id) => {
+    const updateCart=carts.find((item)=>item.id===id)
+    if(updateCart){
+        return{...item,quantity: item.quantity+1}
+    }
+    console.log('first',updateCart)
+  }
 
   // Calculate total price
   const totalPrice = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);

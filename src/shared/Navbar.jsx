@@ -18,7 +18,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { logOutUser } from "@/app/page/redux/authAction"
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-import { useCart } from "@/app/hook/useCart"
+
 
 function Navbar() {
   const pathname = usePathname()
@@ -26,8 +26,7 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 const dispatch=useDispatch()
   const  user  = useSelector((state) => state.auth.user);
-const carts=useCart()
-
+  const carts=useSelector((state)=>state.cart.items)
 
   // Load theme from localStorage
   useEffect(() => {

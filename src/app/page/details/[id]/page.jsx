@@ -1,256 +1,268 @@
 "use client";
 import { useRef, useState } from "react";
-import panjabi from '@/app/asset/panjabi.jpg'
-
-
-
-// import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import Image from 'next/image'
-import React from 'react'
-import { FaFacebook, FaInstagram, FaMinus } from 'react-icons/fa'
-import { TbCoinTakaFilled } from "react-icons/tb";
-import { GoPlus } from "react-icons/go";
-import { Button } from "@/components/ui/button";
-import ProductCard from "../../home/component/Card";
-import ProductsSection from "../../home/component/ProductsSection";
+import Image from "next/image";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/cartsSlice";
+import Swal from "sweetalert2";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { TbCoinTakaFilled } from "react-icons/tb";
+import ProductsSection from "../../home/component/ProductsSection";
+import panjabi from "@/app/asset/panjabi.jpg";
 
 const images = [
-  {
-    img: 'https://api.believerssign.com.bd/public/product/sKoSvgmy-FeuwI7rHZx.jpg'
-  }, {
-    img: 'https://api.believerssign.com.bd/public/category/cD0ozaELxhOuTWp-TYj.jpg'
-  }
-]
-function page() {
+  { img: "https://api.believerssign.com.bd/public/product/sKoSvgmy-FeuwI7rHZx.jpg" },
+  { img: "https://api.believerssign.com.bd/public/category/cD0ozaELxhOuTWp-TYj.jpg" },
+];
+
+export default function Page() {
+  const dispatch = useDispatch();
   const imgRef = useRef(null);
   const [zoomStyle, setZoomStyle] = useState({});
-  const [url, setUrl] = useState(
-    'https://api.believerssign.com.bd/public/product/sKoSvgmy-FeuwI7rHZx.jpg'
-  )
+  const [url, setUrl] = useState(images[0].img);
 
-  const[products,setProducts]=useState({
+  // ✅ initial product state
+  const [products, setProducts] = useState({
     id: "SKU-B0123",
     name: "Box Office News!",
     price: 400,
     oldPrice: 1000,
-    size: "",
-    quantity: 1,
     image: images[0].img,
-  })
+    size: "",
+    sizeQuantities: { m: 1, l: 1, xl: 1, xxl: 1 },
+    stock: { m: 5, l: 3, xl: 2, xxl: 8 }, // ✅ each size stock
+  });
 
+  // ✅ Image zoom handlers
   const handleMouseMove = (e) => {
     const rect = imgRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomStyle({ transformOrigin: `${x}% ${y}%`, transform: "scale(2)" });
+  };
+  const handleMouseLeave = () => setZoomStyle({ transform: "scale(1)" });
 
-    setZoomStyle({
-      transformOrigin: `${x}% ${y}%`,
-      transform: "scale(2)", // 2x zoom
+  // ✅ handle size selection
+  const handleSizeSelect = (size) => {
+    setProducts((prev) => ({ ...prev, size }));
+  };
+
+  // ✅ handle quantity increment/decrement with stock check
+  const handleCount = (type) => {
+    if (!products.size) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select a Size",
+        text: "Choose a size before changing quantity.",
+      });
+      return;
+    }
+
+    setProducts((prev) => {
+      const newSizeQuantities = { ...prev.sizeQuantities };
+      let currentQty = newSizeQuantities[prev.size];
+      const currentStock = prev.stock[prev.size];
+
+      if (type === "-" && currentQty > 1) currentQty -= 1;
+      if (type === "+") {
+        if (currentQty >= currentStock) {
+          Swal.fire({
+            icon: "error",
+            title: "Out of Stock",
+            text: `Only ${currentStock} items available in size ${prev.size.toUpperCase()}.`,
+          });
+          return prev; // stop here
+        }
+        currentQty += 1;
+      }
+
+      newSizeQuantities[prev.size] = currentQty;
+      return { ...prev, sizeQuantities: newSizeQuantities };
     });
   };
 
-
-  const handleMouseLeave = () => {
-    setZoomStyle({ transform: "scale(1)" });
-  };
-
-
-  // handle change
-  const handleChange=(key,value)=>{
-    setProducts((prev)=>({...prev,[key]:value}))
-  }
-
-// function
-const handleCount = (type) => {
-  setProducts((prev)=>{
-    let newQuantity=prev.quantity;
-    if(type==='-'&& prev.quantity>1) newQuantity=prev.quantity-1;
-    if(type==='+') newQuantity=prev.quantity + 1;
-    
-    // total price
-    const newPrice=prev.price * newQuantity;
-    return {
-      ...prev,
-      quantity:newQuantity,
-      price:newPrice
+  // ✅ add to cart (Redux + SweetAlert)
+  const handleAddToCart = () => {
+    if (!products.size) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select a Size",
+        text: "Choose your preferred size before adding to cart.",
+      });
+      return;
     }
-  })
-  
-};
 
-// add to cart local storage
-const handleAddToCart=()=>{
-  const cart=JSON.parse(localStorage.getItem('cart')) || []
-  const isexisting=cart.find((item)=>item.id===products.id && item.size===products.size)
-  if(isexisting){
- alert("✅ all ready Added to cart!");
-  }else{
-    cart.push(products)
-  }
-  localStorage.setItem('cart',JSON.stringify(cart))
-      alert("✅ Added to cart!");
+    const productToAdd = {
+      id: products.id,
+      name: products.name,
+      image: products.image,
+      size: products.size,
+      quantity: products.sizeQuantities[products.size],
+      price: products.price,
+    };
 
-}
+    dispatch(addToCart(productToAdd));
+    Swal.fire({
+      icon: "success",
+      title: "Added to Cart",
+      text: `${products.name} (${products.size.toUpperCase()}) added successfully!`,
+    });
+  };
 
   return (
     <div className="max-w-7xl mx-auto mt-10 space-y-10">
-       <div className="flex flex-col lg:flex-row lg:h-[700px] ">
+      <div className="flex flex-col lg:flex-row lg:h-[700px]">
+        {/* 🖼️ Product Image */}
+        <div className="w-full relative border sm:overflow-hidden mx-auto h-[300px] sm:h-[400px] md:h-[500px] lg:h-full">
+          <div
+            ref={imgRef}
+            className="w-full h-full transition-transform duration-300"
+            style={zoomStyle}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Image src={url} alt="product" fill className="object-cover cursor-zoom-in" />
+          </div>
 
-          {/* Main Image with Zoom */}
-    <div className="w-full relative border sm:overflow-hidden mx-auto h-[300px] sm:h-[400px] md:h-[500px] lg:h-full">
-      <div
-        ref={imgRef}
-        className="w-full h-full transition-transform duration-300"
-        style={zoomStyle}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <Image
-          src={url}
-          alt="product"
-          fill
-          className="object-cover cursor-zoom-in"
-        />
-      </div>
-
-   {/* Small Thumbnail */}
-<div className="flex items-center gap-2 flex-wrap mt-2 
-            
-              absolute  -bottom-0
-                bg-white/80 p-2 rounded-md">
-  {images?.map((img, i) => (
-    <div
-      key={i}
-      className="relative w-14 h-14 sm:w-20 sm:h-20 border cursor-pointer"
-      onClick={() => setUrl(img?.img)}
-    >
-      <Image
-        src={img?.img}
-        alt="thumbnail"
-        fill
-        className="object-cover rounded"
-      />
-    </div>
-  ))}
-</div>
-
-    </div>
-
-          {/* Product Info */}
-          <div className="border h-full p-4 space-y-4">
-            <h1 className="text-5xl font-bold">Box Office News!</h1>
-            <div className="flex justify-between">
-              <h4>SKU:B0122</h4>
-              <div className="flex gap-2 text-2xl">
-                <FaFacebook />
-                <FaInstagram />
-              </div>
-            </div>
-
-            <div className="divider"></div>
-
-            <p className="flex gap-2 items-center">
-              <span className="font-bold line-through text-xl">&#2547;1000</span>
-              <span className="text-3xl text-destructive flex items-center">
-                <TbCoinTakaFilled />400
-              </span>
-            </p>
-            <p className="text-xl">
-              <span className="font-bold">Brand:</span> Stock out
-            </p>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-              quasi. In deleniti eaque aut repudiandae et a id nisi.
-            </p>
-            <p>Size :    </p>
-              
-                <div>
-            {["m", "l", "xl", "xxl"].map((s) => (
-              <span
-                key={s}
-                onClick={() => handleChange("size", s)}
-                className={`border cursor-pointer ml-2 px-4 py-2 text-center ${
-                  products.size === s ? "bg-black text-white" : ""
-                } border-black`}
+          {/* Thumbnail */}
+          <div className="flex items-center gap-2 flex-wrap mt-2 absolute -bottom-0 bg-white/80 p-2 rounded-md">
+            {images.map((img, i) => (
+              <div
+                key={i}
+                className="relative w-14 h-14 sm:w-20 sm:h-20 border cursor-pointer"
+                onClick={() => setUrl(img.img)}
               >
-                {s.toUpperCase()}
-              </span>
+                <Image src={img.img} alt="thumbnail" fill className="object-cover rounded" />
+              </div>
             ))}
           </div>
-        
-           <p>Quantity:</p>
-           <div>
-             <button onClick={()=>handleCount('-')} className="border px-5 text-2xl cursor-pointer py-3 ">-</button>
-             <button  className="border px-5 text-2xl cursor-pointer py-3 ">{products.quantity}</button>
-             <button onClick={()=>handleCount('+')} className="border px-5 text-2xl cursor-pointer py-3 ">+</button>
-           </div>
-           <div className="divider"></div>
-           {/* button */}
-         <div className="flex gap-4 ">
-  {/* Add to Cart Button */}
-  <button 
-  onClick={handleAddToCart}
-  className="flex-1  cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
-    Add to Cart
-  </button>
+        </div>
 
-  {/* Buy Now Button */}
- <Link href={'/page/checkout'}> 
- <button className="flex-1 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md transition duration-300">
-    Buy Now
-  </button>
-  </Link>
-</div>
+        {/* 🛍️ Product Info */}
+        <div className="border h-full p-6 space-y-6 rounded-xl shadow-lg bg-white">
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold text-gray-800">{products.name}</h1>
+            <div className="flex gap-3 text-2xl text-gray-600">
+              <FaFacebook className="cursor-pointer hover:text-blue-600 transition" />
+              <FaInstagram className="cursor-pointer hover:text-pink-500 transition" />
+            </div>
           </div>
 
-        </div>
+          <div className="flex justify-between items-center text-gray-500">
+            <h4 className="text-lg">SKU: {products.id}</h4>
+            <p className="font-semibold">
+              <span className="text-green-600">In Stock</span>
+            </p>
+          </div>
 
-      {/* specification */}
-      <div className="shadow-2xl px-10 py-10 rounded-md space-y-4">
-        <div>
-          <Image
-            src={panjabi}
-          />
-          <p className="text-xl font-semibold">A timeless blend of elegance and comfort— our Panjabi ensures a refined look for every celebration.</p>
+          <div className="border-t border-gray-200"></div>
+
+          {/* 💰 Price */}
+          <p className="flex gap-3 items-center">
+            <span className="line-through text-gray-400 text-xl">৳{products.oldPrice}</span>
+            <span className="text-3xl font-bold text-red-600 flex items-center">
+              <TbCoinTakaFilled /> {products.price}
+            </span>
+          </p>
+
+          {/* ✨ Description */}
+          <p className="text-gray-700 leading-relaxed">
+            A timeless blend of elegance and comfort—our Panjabi ensures a refined look for every
+            celebration.
+          </p>
+
+          {/* 👕 Size Select with stock display */}
+          <div>
+            <p className="font-semibold text-lg mb-2">Select Size:</p>
+            <div className="flex gap-3 flex-wrap">
+              {["m", "l", "xl", "xxl"].map((s) => (
+                <span
+                  key={s}
+                  onClick={() => handleSizeSelect(s)}
+                  className={`px-5 py-2 border rounded-lg cursor-pointer transition ${
+                    products.size === s
+                      ? "bg-black text-white border-black"
+                      : "bg-gray-100 hover:bg-gray-200 border-gray-400"
+                  }`}
+                >
+                  {s.toUpperCase()}{" "}
+                  <span className="text-sm text-gray-500 ml-1">
+                    ({products.stock[s]} in stock)
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 🧮 Quantity Control */}
+          {products.size && (
+            <div className="space-y-3 mt-4">
+              <p className="font-semibold text-lg">
+                Quantity for <span className="uppercase">{products.size}</span>:
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => handleCount("-")}
+                  className="border rounded-lg px-5 py-2 text-2xl font-bold hover:bg-gray-200"
+                >
+                  -
+                </button>
+                <span className="text-2xl font-semibold w-10 text-center">
+                  {products.sizeQuantities[products.size]}
+                </span>
+                <button
+                  onClick={() => handleCount("+")}
+                  className="border rounded-lg px-5 py-2 text-2xl font-bold hover:bg-gray-200"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 🛒 Buttons */}
+          <div className="flex gap-4 mt-6">
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition"
+            >
+              🛒 Add to Cart
+            </button>
+
+            <Link href={"/page/checkout"} className="flex-1">
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition">
+                ⚡ Buy Now
+              </button>
+            </Link>
+          </div>
         </div>
+      </div>
+
+      {/* 📋 Specification Section */}
+      <div className="shadow-2xl px-10 py-10 rounded-md space-y-4">
+        <Image src={panjabi} alt="panjabi" />
+        <p className="text-xl font-semibold">
+          A timeless blend of elegance and comfort— our Panjabi ensures a refined look for every
+          celebration.
+        </p>
         <h1 className="font-bold text-2xl">Specification:</h1>
         <ul className="text-xl font-sans">
           <li>✅ Color - Navy Blue</li>
           <li>✅ Fabric - Twill Cotton</li>
           <li>✅ GSM - 260-265</li>
-          <li>✅ Drawstring for an adjustable fit</li>
+          <li>✅ Adjustable Drawstring Fit</li>
           <li>✅ Super Quality Zipper Fly & Elastic</li>
           <li>✅ Zippered Side Pockets</li>
-          <li>✅ Premium Hand Feel with Fine Finish</li>
-          <li>✅ Highly Durable, Breathable & Comfortable</li>
+          <li>✅ Breathable & Comfortable</li>
           <li>✅ Slim Fit</li>
         </ul>
-
-        <h2 className="text-xl font-bold">🔻Care Instruction:</h2>
-        <ol className="text-xl font-semibold ml-2">
-              
-          <li>1.Do not bleach.</li>
-          <li>2.Do not tumble dry.</li>
-          <li>3.Please do not keep it wet for a long time.</li>
-          <li>4. Don’t dry in the sun for a long time.</li>
-          <li>5.Use cold water.   </li>  
-        </ol>
-
-        <h3><span className="text-2xl font-bold">◾ Color/Image Disclaimer:.</span> Actual product color and design may vary slightly from images due to monitor settings and lighting conditions</h3>
-
       </div>
 
-      {/* relatate product */}
-    <div className="">
-      <h1 className="text-3xl font-bold text-center">Related Product </h1>
-        <ProductsSection/>
+      {/* 🔁 Related Products */}
+      <div>
+        <h1 className="text-3xl font-bold text-center">Related Products</h1>
+        <ProductsSection />
+      </div>
     </div>
-          </div>
-
-
-  )
+  );
 }
-
-export default page

@@ -28,7 +28,7 @@ const dispatch=useDispatch()
   const password = watch("password");
 
   const onSubmit = (data) => {
-    console.log('data',data)
+
     
     dispatch(registerUser(data.name,data.email,data.password,data.phone))
   };

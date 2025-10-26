@@ -5,7 +5,7 @@ import { Star } from "lucide-react"   // যদি icon দরকার হয়, 
 import Link from "next/link"
 
 export default function ProductCard({detail}) {
- const { img, discount, name, rating, price, title ,id}=detail
+ const { img, discount, name, rating, price, title ,id,images}=detail
   return (
     <div className="border rounded-xl shadow-md overflow-hidden hover:shadow-lg transition group">
       {/* Image Section */}
