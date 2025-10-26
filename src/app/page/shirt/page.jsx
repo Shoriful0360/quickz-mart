@@ -5,10 +5,10 @@ const shirtCollections = [
     id: "SKU-S001",
     name: "Classic White Cotton Shirt",
     title: "Premium White Formal Shirt",
-    img: "https://i.imghippo.com/files/C3yW413GO.jpg",
+    img: "https://media.istockphoto.com/id/1250924537/photo/young-businessman-outdoor-wearing-sunglasses.jpg?s=612x612&w=0&k=20&c=jyE6T7MFtWjnVxJQDExtKSOvGJbrL3-k6jjKClNfmnM=",
     images: [
-      { img: "https://i.imghippo.com/files/C3yW413GO.jpg" },
-      { img: "https://i.imghippo.com/files/2n8h135rc.jpg" }
+      { img: "https://plus.unsplash.com/premium_photo-1678218580850-15c50b9f3525?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" },
+      { img: "https://images.unsplash.com/photo-1603252109612-24fa03d145c8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA4fHxDbGFzc2ljJTIwV2hpdGUlMjBDb3R0b24lMjBTaGlydHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500" }
     ],
     oldPrice: 1800,
     price: 1450,
@@ -26,10 +26,10 @@ const shirtCollections = [
     id: "SKU-S002",
     name: "Navy Blue Casual Shirt",
     title: "Navy Blue Stylish Casual Shirt",
-    img: "https://i.imghippo.com/files/5soj7613q.jpg",
+    img: "https://media.istockphoto.com/id/1071354634/photo/blue-shirt-folded.jpg?s=612x612&w=0&k=20&c=HtEyiqWrpbTio1Xt5z0pow0GLqCvHYNWVldU_nymtVg=",
     images: [
-      { img: "https://i.imghippo.com/files/5soj7613q.jpg" },
-      { img: "https://i.imghippo.com/files/Ws9162uAc.jpg" }
+      { img: "https://media.istockphoto.com/id/1071355982/photo/blue-shirts-folded.jpg?s=612x612&w=0&k=20&c=sQyo7m8CPQaQtI9u8QTKhYCpy-6N0giXuiFaTeGlZ4Y=" },
+      { img: "https://images.unsplash.com/photo-1622467501642-dfc72526d5a3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&q=60&w=500" }
     ],
     oldPrice: 1600,
     price: 1250,
@@ -47,10 +47,10 @@ const shirtCollections = [
     id: "SKU-S003",
     name: "Black Premium Shirt",
     title: "Black Slim Fit Premium Shirt",
-    img: "https://i.imghippo.com/files/Pe3j601bA.jpg",
+    img: "https://media.istockphoto.com/id/638661832/photo/beautiful-casual-men-shirt-and-clothes.jpg?s=612x612&w=0&k=20&c=ZvjMqLW_TE5IaHikNtorGqbf_CZvk_7zeCtsDTF9XTs=",
     images: [
-      { img: "https0://i.imghippo.com/files/Pe3j601bA.jpg" },
-      { img: "https://i.imghippo.com/files/R0j244nZP.jpg" }
+      { img: "https://media.istockphoto.com/id/638661832/photo/beautiful-casual-men-shirt-and-clothes.jpg?s=612x612&w=0&k=20&c=ZvjMqLW_TE5IaHikNtorGqbf_CZvk_7zeCtsDTF9XTs=" },
+      { img: "https://images.unsplash.com/photo-1645466478772-99f652533d44?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0NHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=500" }
     ],
     oldPrice: 1900,
     price: 1500,
@@ -68,10 +68,10 @@ const shirtCollections = [
     id: "SKU-S004",
     name: "Light Blue Denim Shirt",
     title: "Soft Denim Light Blue Shirt",
-    img: "https://i.imghippo.com/files/Yc4N15kiZ.jpg",
+    img: "https://media.istockphoto.com/id/876146906/photo/new-man-shirt-blue-on-wood-background.webp?a=1&s=612x612&w=0&k=20&c=J4lJlIarQMMsJKHmGH0eNvbfDQCTdHLYkZ0FqYOHs_M=",
     images: [
-      { img: "https://i.imghippo.com/files/Yc4N15kiZ.jpg" },
-      { img: "https://i.imghippo.com/files/gDNM739bd.jpg" }
+      { img: "https://media.istockphoto.com/id/876146906/photo/new-man-shirt-blue-on-wood-background.webp?a=1&s=612x612&w=0&k=20&c=J4lJlIarQMMsJKHmGH0eNvbfDQCTdHLYkZ0FqYOHs_M=" },
+      { img: "https://media.istockphoto.com/id/876146854/photo/new-man-shirt-blue-on-wood-background.webp?a=1&s=612x612&w=0&k=20&c=KyxJH69TwCh0bQ9qc4k7DJcGhtnOfx2qLIYZY6bHBnc=" }
     ],
     oldPrice: 2000,
     price: 1600,
@@ -89,10 +89,10 @@ const shirtCollections = [
     id: "SKU-S005",
     name: "Checked Flannel Shirt",
     title: "Red & Black Checked Flannel",
-    img: "https://i.imghippo.com/files/cFB3F516k.jpg",
+    img: "https://media.istockphoto.com/id/641319412/photo/men-shirt-for-clothing-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=f31XJAn9bWsQ4Y-YLzSgjlDIARbQahHWeVzQbVf5K0I=",
     images: [
-      { img: "https://i.imghippo.com/files/cFB3F516k.jpg" },
-      { img: "https://i.imghippo.com/files/MbA33848x.jpg" }
+      { img: "https://media.istockphoto.com/id/641319434/photo/men-shirt-for-clothing-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=isOkdR7GIvggVzfQ4Y8yB9xwgr2lSVFdxNRv3JvVEjs=" },
+      { img: "https://media.istockphoto.com/id/641319412/photo/men-shirt-for-clothing-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=f31XJAn9bWsQ4Y-YLzSgjlDIARbQahHWeVzQbVf5K0I=" }
     ],
     oldPrice: 1700,
     price: 1400,
@@ -110,7 +110,7 @@ const shirtCollections = [
     id: "SKU-S006",
     name: "Linen Summer Shirt",
     title: "Beige Breathable Linen Shirt",
-    img: "https://i.imghippo.com/files/L7cYc76vc.jpg",
+    img: "https://images.unsplash.com/photo-1558171813-2ffcb3d2ea27?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&q=60&w=500",
     images: [
       { img: "https://i.imghippo.com/files/L7cYc76vc.jpg" },
       { img: "https://i.imghippo.com/files/bSW2265uJ.jpg" }
