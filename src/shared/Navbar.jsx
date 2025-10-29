@@ -77,7 +77,7 @@ const link = <>
   </NavigationMenuLink>
 
   <NavigationMenuLink 
-    href="/page/trouser"
+    href="/page/pant&trouser"
     className={`text-lg hover:text-red-500 ${pathname === "/page/trouser" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
   >
     Pant & Trouser
