@@ -13,7 +13,7 @@ export const panjabiProducts = [
     rating: 4.6,
     description: "Elegant cotton panjabi ensuring maximum comfort and a stylish look. Breathable fabric ideal for daily wear and festivals.",
     stock: { m: 5, l: 7, xl: 3, xxl: 2 },
-    category: "Cotton Panjabi",
+     category: "panjabi",
     color: "Light Blue",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Hand wash recommended", "Do not dry in direct sunlight"],
@@ -38,7 +38,7 @@ export const panjabiProducts = [
     rating: 4.8,
     description: "Perfect for traditional occasions. Smooth cotton finish with elegant embroidery for a classy look.",
     stock: { m: 3, l: 5, xl: 2, xxl: 0 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "White",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Hand wash recommended", "Iron at medium temperature"],
@@ -63,7 +63,7 @@ export const panjabiProducts = [
     rating: 4.5,
     description: "Stay elegant with this royal blue panjabi made from high-quality cotton fabric. Comfortable and durable.",
     stock: { m: 6, l: 4, xl: 3, xxl: 1 },
-    category: "Cotton Panjabi",
+     category: "panjabi",
     color: "Royal Blue",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Hand wash recommended", "Avoid ironing embroidery"],
@@ -88,7 +88,7 @@ export const panjabiProducts = [
     rating: 4.9,
     description: "Premium black panjabi perfect for festivals and formal events. Soft cotton fabric for excellent comfort.",
     stock: { m: 4, l: 6, xl: 2, xxl: 1 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "Black",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Machine wash cold", "Do not dry in direct sunlight"],
@@ -113,7 +113,7 @@ export const panjabiProducts = [
     rating: 4.4,
     description: "Festive green panjabi with fine embroidery. Lightweight cotton fabric ensures comfort throughout the day.",
     stock: { m: 5, l: 5, xl: 4, xxl: 2 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "Green",
     material: "100% Cotton",
     careInstructions: ["Hand wash only", "Do not bleach", "Do not tumble dry", "Iron on medium heat"],
@@ -138,7 +138,7 @@ export const panjabiProducts = [
     rating: 4.3,
     description: "Light beige cotton panjabi perfect for casual and daily wear. Breathable, soft, and highly durable.",
     stock: { m: 6, l: 7, xl: 5, xxl: 3 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "Beige",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Machine wash cold", "Iron on low heat"],
@@ -163,7 +163,7 @@ export const panjabiProducts = [
     rating: 4.6,
     description: "Sky blue panjabi made from soft cotton fabric. Elegant and comfortable fit for semi-formal events.",
     stock: { m: 3, l: 6, xl: 4, xxl: 2 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "Sky Blue",
     material: "100% Cotton",
     careInstructions: ["Hand wash recommended", "Do not bleach", "Avoid tumble dry", "Iron at medium temperature"],
@@ -188,7 +188,7 @@ export const panjabiProducts = [
     rating: 4.7,
     description: "Classic maroon panjabi perfect for weddings and festive occasions. Soft cotton with elegant finish.",
     stock: { m: 4, l: 5, xl: 3, xxl: 1 },
-    category: "Cotton Panjabi",
+     category: "panjabi",
     color: "Maroon",
     material: "100% Cotton",
     careInstructions: ["Hand wash recommended", "Do not bleach", "Do not tumble dry", "Iron at low-medium heat"],
@@ -213,7 +213,7 @@ export const panjabiProducts = [
     rating: 4.5,
     description: "Casual off-white panjabi for everyday wear. Soft, breathable cotton fabric ensures comfort throughout the day.",
     stock: { m: 6, l: 5, xl: 4, xxl: 2 },
-    category: "Cotton Panjabi",
+     category: "panjabi",
     color: "Off-White",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Hand wash recommended", "Do not tumble dry", "Iron on medium heat"],
@@ -238,7 +238,7 @@ export const panjabiProducts = [
     rating: 4.6,
     description: "Dark grey panjabi made from premium cotton fabric. Perfect for festive or semi-formal events, highly durable and comfortable.",
     stock: { m: 5, l: 4, xl: 3, xxl: 1 },
-    category: "Cotton Panjabi",
+    category: "panjabi",
     color: "Dark Grey",
     material: "100% Cotton",
     careInstructions: ["Do not bleach", "Do not tumble dry", "Hand wash recommended", "Iron at medium heat"],
@@ -249,7 +249,7 @@ export const panjabiProducts = [
 
 export default function Panjabi() {
   return (
-    <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 mt-10 mx-5'>
+    <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 mt-10 mx-5'>
       {
         panjabiProducts.map((detail) => <ProductCard key={detail.id} detail={detail} />)
       }

@@ -14,12 +14,7 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'api.believerssign.com.bd',
-        port: '',
-        pathname: '/**',
-      },
+    
       {
         protocol: 'https',
         hostname: 'etimg.etb2bimg.com',
@@ -46,10 +41,17 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'api.believerssign.com.bd',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'i.imghippo.com',
         port: '',
         pathname: '/**',
       },
+      
     ],
   },
 };

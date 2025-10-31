@@ -7,7 +7,7 @@ import ReviewCard from "./page/home/component/testimonial/ReviewCard";
 
 
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="">
 

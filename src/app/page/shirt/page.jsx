@@ -17,7 +17,7 @@ const shirtCollections = [
     rating: 4.5,
     description: "High-quality white formal shirt with a smooth finish. Perfect for office or business meetings.",
     stock: { m: 6, l: 5, xl: 4, xxl: 3 },
-    category: "Formal Shirt",
+    category: " Shirt",
     color: "White",
     material: "100% Cotton",
     careInstructions: ["Machine wash cold", "Do not bleach", "Iron medium heat", "Hang to dry"]
@@ -38,7 +38,7 @@ const shirtCollections = [
     rating: 4.3,
     description: "Comfortable navy blue casual shirt perfect for everyday wear and hangouts.",
     stock: { m: 7, l: 6, xl: 5, xxl: 2 },
-    category: "Casual Shirt",
+    category: "Shirt",
     color: "Navy Blue",
     material: "Cotton Blend",
     careInstructions: ["Hand wash recommended", "Do not bleach", "Dry in shade", "Iron on low heat"]
@@ -59,7 +59,7 @@ const shirtCollections = [
     rating: 4.6,
     description: "Elegant black slim-fit shirt designed for parties and formal events.",
     stock: { m: 5, l: 5, xl: 5, xxl: 3 },
-    category: "Party Wear Shirt",
+    category: "Shirt",
     color: "Black",
     material: "Cotton & Polyester Mix",
     careInstructions: ["Machine wash gentle", "Wash dark colors separately", "Iron inside out"]
@@ -80,7 +80,7 @@ const shirtCollections = [
     rating: 4.4,
     description: "Trendy denim shirt with a soft and comfortable texture. Ideal for casual wear.",
     stock: { m: 6, l: 4, xl: 4, xxl: 2 },
-    category: "Denim Shirt",
+    category: "Shirt",
     color: "Light Blue",
     material: "Denim Cotton",
     careInstructions: ["Do not bleach", "Cold wash", "Dry in shade", "Iron medium"]
@@ -101,7 +101,7 @@ const shirtCollections = [
     rating: 4.2,
     description: "Soft and warm flannel shirt with classic red-black check pattern.",
     stock: { m: 8, l: 6, xl: 5, xxl: 3 },
-    category: "Flannel Shirt",
+    category: "Shirt",
     color: "Red & Black",
     material: "Flannel Cotton",
     careInstructions: ["Machine wash cold", "Do not bleach", "Tumble dry low"]
@@ -122,7 +122,7 @@ const shirtCollections = [
     rating: 4.5,
     description: "Lightweight beige linen shirt perfect for summer, breathable and stylish.",
     stock: { m: 5, l: 5, xl: 5, xxl: 2 },
-    category: "Linen Shirt",
+    category: "Shirt",
     color: "Beige",
     material: "100% Linen",
     careInstructions: ["Hand wash only", "Dry flat", "Do not bleach", "Iron on low heat"]

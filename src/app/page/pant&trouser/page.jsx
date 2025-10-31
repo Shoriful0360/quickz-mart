@@ -18,7 +18,7 @@ const pantTrouserCollctions = [
     rating: 4.5,
     description: "Comfortable slim fit denim jeans with stretchable fabric for everyday wear.",
     stock: { m: 8, l: 6, xl: 5, xxl: 3 },
-    category: "Pant",
+  category: "pant&trouser",
     color: "Blue",
     material: "98% Cotton, 2% Elastane",
     careInstructions: ["Machine wash cold", "Wash inside out", "Do not bleach"]
@@ -40,7 +40,7 @@ const pantTrouserCollctions = [
     rating: 4.3,
     description: "Soft and breathable chino pants with a modern slim fit design.",
     stock: { m: 7, l: 6, xl: 4, xxl: 2 },
-    category: "Pant",
+   category: "pant&trouser",
     color: "Black",
     material: "100% Cotton",
     careInstructions: ["Hand wash recommended", "Do not tumble dry", "Iron low heat"]
@@ -62,7 +62,7 @@ const pantTrouserCollctions = [
     rating: 4.4,
     description: "Durable cargo pants with multiple pockets, perfect for travel and adventure.",
     stock: { m: 6, l: 5, xl: 4, xxl: 2 },
-    category: "Pant",
+    category: "pant&trouser",
     color: "Beige",
     material: "Cotton + Polyester",
     careInstructions: ["Machine wash cold", "Avoid bleach", "Dry in shade"]
@@ -84,7 +84,7 @@ const pantTrouserCollctions = [
     rating: 4.6,
     description: "Elegant grey formal trouser suitable for office and business meetings.",
     stock: { m: 5, l: 5, xl: 4, xxl: 2 },
-    category: "Trouser",
+    category: "pant&trouser",
     color: "Grey",
     material: "Polyester Viscose Blend",
     careInstructions: ["Dry clean recommended", "Iron medium heat", "Do not bleach"]
@@ -106,7 +106,7 @@ const pantTrouserCollctions = [
     rating: 4.5,
     description: "Soft and comfortable navy trousers ideal for business and formal occasions.",
     stock: { m: 6, l: 5, xl: 3, xxl: 2 },
-    category: "Trouser",
+   category: "pant&trouser",
     color: "Navy Blue",
     material: "70% Polyester, 30% Viscose",
     careInstructions: ["Dry clean only", "Do not bleach", "Hang to dry"]
@@ -128,7 +128,7 @@ const pantTrouserCollctions = [
     rating: 4.7,
     description: "Comfortable stretch fabric trouser that maintains a clean and sharp look.",
     stock: { m: 5, l: 5, xl: 4, xxl: 2 },
-    category: "Trouser",
+    category: "pant&trouser",
     color: "Black",
     material: "Polyester + Elastane",
     careInstructions: ["Machine wash gentle", "Do not tumble dry", "Iron low heat"]

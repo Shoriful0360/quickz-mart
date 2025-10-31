@@ -78,9 +78,15 @@ const link = <>
 
   <NavigationMenuLink 
     href="/page/pant&trouser"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/trouser" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
+    className={`text-lg hover:text-red-500 ${pathname === "/page/pant&trouser" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
   >
     Pant & Trouser
+  </NavigationMenuLink>
+  <NavigationMenuLink 
+    href="/page/t_shirt"
+    className={`text-lg hover:text-red-500 ${pathname === "/page/t_shirt" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
+  >
+   T-Shirt
   </NavigationMenuLink>
 <Link
   href="/page/carts"
