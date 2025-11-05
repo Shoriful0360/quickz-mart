@@ -1,4 +1,4 @@
-'use client'
+
 
 import Image from "next/image"
 import { Star } from "lucide-react"   // যদি icon দরকার হয়, npm i lucide-react install করবে
