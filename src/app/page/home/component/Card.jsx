@@ -10,7 +10,14 @@ export default function ProductCard({detail}) {
     <div className="border rounded-xl shadow-md overflow-hidden hover:shadow-lg transition group">
       {/* Image Section */}
       <div className="relative w-full h-52 ">
-        <Image src={img} alt={name} fill className=" object-cover  group-hover:scale-105  transition-transform duration-500 " />
+ <Image
+  src={img}
+  alt={name}
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="object-cover group-hover:scale-105 transition-transform duration-500"
+  priority
+/>
         {/* Discount Badge */}
         <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
           {discount}

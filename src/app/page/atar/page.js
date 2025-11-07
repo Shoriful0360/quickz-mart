@@ -11,7 +11,7 @@ const AtarPage =async() => {
 
 
     return (
-        <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 mt-10'>
+        <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 mt-10 w-11/12 mx-auto'>
          {
             atarCollection.map((detail)=><ProductCard key={detail._id} detail={detail}/>)
          }

@@ -1,35 +1,34 @@
-'use client'
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { logOutUser } from "@/app/page/redux/authAction"
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuItem,
+  NavigationMenuLink
 } from "@/components/ui/navigation-menu"
+
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
 import { IoMdMenu } from "react-icons/io"
-import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { logOutUser } from "@/app/page/redux/authAction"
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
+import { MdOutlineShoppingCartCheckout } from "react-icons/md"
 
-
-function Navbar() {
+export default function Navbar() {
   const pathname = usePathname()
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.auth.user)
+  const carts = useSelector(state => state.cart.items)
+
   const [darkmode, setDarkmode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-const dispatch=useDispatch()
-  const  user  = useSelector((state) => state.auth.user);
-  const carts=useSelector((state)=>state.cart.items)
 
-  // Load theme from localStorage
-  useEffect(() => {
+  // Load theme from localStorage + system preference
+   useEffect(() => {
     const savedTheme = localStorage.getItem("theme")
     if (savedTheme === "dark") {
       setDarkmode(true)
@@ -37,6 +36,7 @@ const dispatch=useDispatch()
     }
   }, [])
 
+  // Update theme on toggle
   useEffect(() => {
     if (darkmode) {
       document.documentElement.classList.add("dark")
@@ -47,94 +47,14 @@ const dispatch=useDispatch()
     }
   }, [darkmode])
 
-const link = <>
-  <NavigationMenuLink 
-    href="/"
-    className={`text-lg hover:text-red-500 ${pathname === "/" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-    Home
-  </NavigationMenuLink>
-
-  <NavigationMenuLink 
-    href="/page/atar"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/atar" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-    Atar
-  </NavigationMenuLink>
-
-  <NavigationMenuLink 
-    href="/page/panjabi"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/panjabi" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-    Panjabi
-  </NavigationMenuLink>
-
-  <NavigationMenuLink 
-    href="/page/shirt"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/shirt" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-    Shirt
-  </NavigationMenuLink>
-
-  <NavigationMenuLink 
-    href="/page/pant&trouser"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/pant&trouser" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-    Pant & Trouser
-  </NavigationMenuLink>
-  <NavigationMenuLink 
-    href="/page/t_shirt"
-    className={`text-lg hover:text-red-500 ${pathname === "/page/t_shirt" ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"}`}
-  >
-   T-Shirt
-  </NavigationMenuLink>
-<Link
-  href="/page/carts"
-  className={`relative group hidden lg:block ${
-    pathname === "/page/cart"
-      ? "text-red-500"
-      : "text-gray-800 dark:text-white"
-  }`}
->
-  {/* Icon wrapper */}
-  <div className="
-    relative flex items-center justify-center 
-    p-2 
-    text-2xl sm:text-3xl md:text-4xl    /* Responsive icon size */
-    rounded-full 
-    transition-all duration-300 
-    group-hover:bg-gray-100 dark:group-hover:bg-gray-800
-  ">
-    <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
-
-    {/* Badge / Cart Count */}
-    <span
-      className="
-        absolute 
-        top-1 right-1 sm:-top-2 sm:-right-2   
-        bg-red-500 text-white 
-        text-[10px] sm:text-xs md:text-sm      
-        w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6    
-        flex items-center justify-center 
-        rounded-full shadow-md
-      "
-    >
-      {carts.length}
-    </span>
-  </div>
-</Link>
-
-
-
-
-
-
-
-
-</>
-
-
-
+  const links = [
+    { href: "/", label: "Home" },
+    { href: "/page/atar", label: "Atar" },
+    { href: "/page/panjabi", label: "Panjabi" },
+    { href: "/page/shirt", label: "Shirt" },
+    { href: "/page/pant&trouser", label: "Pant & Trouser" },
+    { href: "/page/t_shirt", label: "T-Shirt" },
+  ]
 
   return (
     <header className="shadow-xl bg-white dark:bg-gray-900">
@@ -148,13 +68,36 @@ const link = <>
         {/* Desktop Navigation */}
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
-            <NavigationMenuItem className="flex items-center gap-4 font-medium ">
-              {link}
+            <NavigationMenuItem className="flex items-center gap-4 font-medium">
+              {links.map(link => (
+                <NavigationMenuLink
+                  key={link.href}
+                  href={link.href}
+                  className={`text-lg hover:text-red-500 ${
+                    pathname === link.href ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"
+                  }`}
+                >
+                  {link.label}
+                </NavigationMenuLink>
+              ))}
+
+              {/* Cart Icon */}
+              <Link href="/page/carts" className="relative group hidden lg:block">
+                <div className="relative flex items-center justify-center p-2 text-2xl sm:text-3xl md:text-4xl rounded-full transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">
+                  <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
+                  <span
+                    className="absolute top-1 right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] sm:text-xs md:text-sm rounded-full shadow-md"
+                    suppressHydrationWarning
+                  >
+                    {carts.length}
+                  </span>
+                </div>
+              </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* Desktop Right: DarkMode + Login/Profile */}
+        {/* Right Side: Darkmode + Login/Profile */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 text-gray-800 dark:text-white">
             <span className="hidden lg:block">Dark Mode</span>
@@ -162,51 +105,27 @@ const link = <>
           </div>
 
           {user ? (
-           
-         
-               <Button 
-               onClick={()=>dispatch(logOutUser())}
-               variant="default">logout</Button>
-            
+            <Button onClick={() => dispatch(logOutUser())} variant="default">
+              Logout
+            </Button>
           ) : (
             <>
-              <Button variant="default"><Link href="/page/authentication/Login">Login</Link></Button>
-              <Link
-  href="/page/carts"
-  className={`relative lg:hidden group ${
-    pathname === "/page/cart"
-      ? "text-red-500"
-      : "text-gray-800 dark:text-white"
-  }`}
->
-  {/* Icon wrapper */}
-  <div className="
-    relative flex items-center justify-center 
-    p-2 
-    text-2xl sm:text-3xl md:text-4xl    /* Responsive icon size */
-    rounded-full 
-    transition-all duration-300 
-    group-hover:bg-gray-100 dark:group-hover:bg-gray-800
-  ">
-    <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
+              <Button variant="default">
+                <Link href="/page/authentication/Login">Login</Link>
+              </Button>
 
-    {/* Badge / Cart Count */}
-    <span
-      className="
-        absolute 
-        top-1 right-1 sm:-top-2 sm:-right-2   
-        bg-red-500 text-white 
-        text-[10px] sm:text-xs md:text-sm      
-        w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6    
-        flex items-center justify-center 
-        rounded-full shadow-md
-      "
-    >
-    {carts.length}
-    </span>
-  </div>
-</Link>
-              {/* <Button variant="outline"><Link href="/register">Register</Link></Button> */}
+              {/* Mobile Cart */}
+              <Link href="/page/carts" className="relative lg:hidden group">
+                <div className="relative flex items-center justify-center p-2 text-2xl sm:text-3xl md:text-4xl rounded-full transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">
+                  <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
+                  <span
+                    className="absolute top-1 right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] sm:text-xs md:text-sm rounded-full shadow-md"
+                    suppressHydrationWarning
+                  >
+                    {carts.length}
+                  </span>
+                </div>
+              </Link>
             </>
           )}
         </div>
@@ -220,21 +139,24 @@ const link = <>
 
       </nav>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white dark:bg-gray-900 shadow-lg w-10/12 mx-auto rounded-md p-4 flex flex-col space-y-4 mt-2">
-      
-          
-       
-            <ul className="ml-4 mt-2 flex flex-col space-y-1 text-gray-600 dark:text-gray-300">
-      {link}
-            </ul>
-        
-    
+          <ul className="ml-4 mt-2 flex flex-col space-y-1 text-gray-600 dark:text-gray-300">
+            {links.map(link => (
+              <NavigationMenuLink
+                key={link.href}
+                href={link.href}
+                className={`text-lg hover:text-red-500 ${
+                  pathname === link.href ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"
+                }`}
+              >
+                {link.label}
+              </NavigationMenuLink>
+            ))}
+          </ul>
         </div>
       )}
     </header>
   )
 }
-
-export default Navbar
