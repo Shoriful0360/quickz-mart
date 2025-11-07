@@ -7,10 +7,13 @@ import dbConnect, { collectionNameObj } from '@/sever/connect';
 const AtarPage =async() => {
   const products= dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:'Attar'}).toArray()
+  const atarCollection=JSON.parse(JSON.stringify(data))
+
+
     return (
         <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2.5 mt-10'>
          {
-            data.map((detail)=><ProductCard key={detail._id} detail={detail}/>)
+            atarCollection.map((detail)=><ProductCard key={detail._id} detail={detail}/>)
          }
         </div>
     );

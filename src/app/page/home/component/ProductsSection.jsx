@@ -13,16 +13,12 @@ export default async function ProductsSection() {
   .limit(5)
   .toArray()
 
-const products=data.map(item=>({
-  ...item,
-   id: item._id.toString(),
-  _id: undefined
-}))
+const products=JSON.parse(JSON.stringify(data))
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {
-        products?.map((detail)=><ProductCard key={detail.id}
+        products?.map((detail)=><ProductCard key={detail._id}
    detail={detail}
       />)
       }
