@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <div className="">
 
-<div className="h-[400] md:h-[600] lg:h-[700] xl:h-[750]">
+<div className="h-[50vh]">
   <Slide />
 </div>
 
