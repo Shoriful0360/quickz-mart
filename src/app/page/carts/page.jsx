@@ -1,33 +1,31 @@
 'use client'
 
-import { useCart } from "@/app/hook/useCart";
-import { useState, useEffect } from "react";
 
+
+import { useDispatch, useSelector } from "react-redux";
+import { decreaseQty, increaseQty, removeFromCart } from "../redux/cartsSlice";
+import Image from "next/image";
+import Link from "next/link";
+// import { addToCart } from "@/app/page/redux/cartsSlice";
 const CartPage = () => {
-  const cartsFromStorage=JSON.parse(localStorage.getItem('cart')) || []
-  const [carts,setCarts]=useState(cartsFromStorage)
+  const carts = useSelector(state => state.cart.items)
+  const dispatch=useDispatch()
+ 
 
 
   // Quantity increase
-  const increaseQty = (id) => {
-    const updatedCart = carts.map(item => {
-      if(item.id === id){
-        return {...item, quantity: item.quantity + 1};
-      }
-      return item;
-    });
-    setCarts(updatedCart);
+  const increase = (id) => {
+ dispatch(increaseQty({id}))
   }
 
   // Quantity decrease
-  const decreaseQty = (id) => {
-    const updateCart=carts.find((item)=>item.id===id)
-    if(updateCart){
-        return{...item,quantity: item.quantity+1}
-    }
-    console.log('first',updateCart)
+  const decrease = (id) => {
+   dispatch(decreaseQty({id}))
+   
   }
-
+const removeItem=(id)=>{
+  dispatch(removeFromCart({id}))
+}
   // Calculate total price
   const totalPrice = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -40,40 +38,61 @@ const CartPage = () => {
       ) : (
         <div className="flex flex-col gap-4">
           {carts.map(item => (
-            <div key={item.id} className="flex flex-col md:flex-row items-center md:justify-between p-4 border rounded-lg shadow-sm">
-              {/* Image */}
-              <img src={item.image} alt={item.name} className="w-24 h-24 object-cover rounded-md mb-2 md:mb-0"/>
+         <div
+  key={item.id}
+  className="flex flex-col md:flex-row items-center justify-between p-4 border rounded-lg shadow-sm relative"
+>
+  {/* Remove Button */}
+  <button
+    onClick={() => removeItem(item.id)}
+    className="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-xl font-bold"
+  >
+    ×
+  </button>
 
-              {/* Product Details */}
-              <div className="flex-1 md:ml-4 text-center md:text-left">
-                <h2 className="text-xl font-semibold">{item.name}</h2>
-                <p className="text-gray-500">Size: {item.size || "N/A"}</p>
-                <p className="text-gray-500 line-through">{item.oldPrice} ৳</p>
-                <p className="text-red-500 font-bold">{item.price} ৳</p>
-              </div>
+  {/* Image */}
+ <div className="relative w-24 h-24">
+  <Image
+    src={item.image}
+    alt={item.name}
+    fill
+    className="object-cover rounded-md"
+    sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,33vw"
+    priority
+  />
+</div>
 
-              {/* Quantity Controls */}
-              <div className="flex items-center mt-2 md:mt-0 space-x-2">
-                <button
-                  onClick={() => decreaseQty(item.id)}
-                  className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  -
-                </button>
-                <span className="px-3 py-1 border rounded">{item.quantity}</span>
-                <button
-                  onClick={() => increaseQty(item.id)}
-                  className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  +
-                </button>
-              </div>
+  {/* Product Details */}
+  <div className="flex-1 md:ml-4 text-center md:text-left">
+    <h2 className="text-xl font-semibold">{item.name}</h2>
+    <p className="text-gray-500">Size: {item.size || "N/A"}</p>
+    <p className="text-gray-500 line-through">{item.oldPrice} ৳</p>
+    <p className="text-red-500 font-bold">{item.price} ৳</p>
+  </div>
 
-              {/* Item Total Price */}
-              <div className="mt-2 md:mt-0 md:ml-4 font-bold text-lg">
-                {item.price * item.quantity} ৳
-              </div>
-            </div>
+  {/* Quantity Controls */}
+  <div className="flex items-center mt-2 md:mt-0 space-x-2">
+    <button
+      onClick={() => decrease(item.id)}
+      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+    >
+      -
+    </button>
+    <span className="px-3 py-1 border rounded">{item.quantity}</span>
+    <button
+      onClick={() => increase(item.id)}
+      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+    >
+      +
+    </button>
+  </div>
+
+  {/* Item Total Price */}
+  <div className="mt-2 md:mt-0 md:ml-4 font-bold text-lg">
+    {item.price * item.quantity} ৳
+  </div>
+</div>
+
           ))}
 
           {/* Total Price */}
@@ -83,9 +102,10 @@ const CartPage = () => {
 
           {/* Checkout Button */}
           <div className="text-right mt-2">
+            <Link href={'/page/checkout'}>
             <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
               Proceed to Checkout
-            </button>
+            </button></Link>
           </div>
         </div>
       )}

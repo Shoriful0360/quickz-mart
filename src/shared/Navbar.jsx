@@ -26,9 +26,15 @@ export default function Navbar() {
 
   const [darkmode, setDarkmode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  // Set client-side rendering
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Load theme from localStorage + system preference
-   useEffect(() => {
+  useEffect(() => {
     const savedTheme = localStorage.getItem("theme")
     if (savedTheme === "dark") {
       setDarkmode(true)
@@ -55,6 +61,15 @@ export default function Navbar() {
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
   ]
+
+  // Cart count component to avoid hydration issues
+  const CartCount = () => (
+    <span
+      className="absolute top-1 right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] sm:text-xs md:text-sm rounded-full shadow-md"
+    >
+      {isClient ? carts.length : 0}
+    </span>
+  )
 
   return (
     <header className="shadow-xl bg-white dark:bg-gray-900">
@@ -85,12 +100,7 @@ export default function Navbar() {
               <Link href="/page/carts" className="relative group hidden lg:block">
                 <div className="relative flex items-center justify-center p-2 text-2xl sm:text-3xl md:text-4xl rounded-full transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">
                   <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
-                  <span
-                    className="absolute top-1 right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] sm:text-xs md:text-sm rounded-full shadow-md"
-                    suppressHydrationWarning
-                  >
-                    {carts.length}
-                  </span>
+                  <CartCount />
                 </div>
               </Link>
             </NavigationMenuItem>
@@ -118,12 +128,7 @@ export default function Navbar() {
               <Link href="/page/carts" className="relative lg:hidden group">
                 <div className="relative flex items-center justify-center p-2 text-2xl sm:text-3xl md:text-4xl rounded-full transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">
                   <MdOutlineShoppingCartCheckout className="transition-all duration-300 group-hover:scale-110" />
-                  <span
-                    className="absolute top-1 right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] sm:text-xs md:text-sm rounded-full shadow-md"
-                    suppressHydrationWarning
-                  >
-                    {carts.length}
-                  </span>
+                  <CartCount />
                 </div>
               </Link>
             </>

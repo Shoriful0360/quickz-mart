@@ -1,87 +1,113 @@
-import React, { useState } from 'react'
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { decreaseQty, increaseQty } from '../../redux/cartsSlice';
 
 export default function OrderSummary() {
-      const [order, setOrder] = useState({
-        product: {
-          name: "Product ABC",
-          image: "https://plus.unsplash.com/premium_photo-1755889381455-ba9accf067cc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
-          price: 2500,
-        },
-        quantity: 1,
-        shippingCharge: 100,
-        discount: 0,
-        vatRate: 0.05, // 5%
-      });
+  const carts = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
-        // Computations
-  const subtotal = order.product.price * order.quantity;
-  const vatAmount = subtotal * order.vatRate;
-  const totalOrder = subtotal + order.shippingCharge + vatAmount - order.discount;
+  const [deliveryArea, setDeliveryArea] = useState('dhaka');
+  const dhakaCharge = 50;
+  const outsideCharge = 150;
 
-  
-const handleQuantity = (value) => {
-  if(value === "-") {
-    setOrder(prev => ({
-      ...prev,
-      quantity: Math.max(prev.quantity - 1, 1) // quantity কখনো 0-এর নিচে যাবে না
-    }));
-  }
+  const increase = (id) => dispatch(increaseQty({ id }));
+  const decrease = (id) => dispatch(decreaseQty({ id }));
 
-  if(value === "+") {
-    setOrder(prev => ({
-      ...prev,
-      quantity: prev.quantity + 1
-    }));
-  }
-}
-  
+  const subtotal = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const deliveryCharge = deliveryArea === 'dhaka' ? dhakaCharge : outsideCharge;
+  const vatRate = 0;
+  const vatAmount = subtotal * vatRate;
+  const discount = subtotal * 0.05;
+  const totalOrder = subtotal + deliveryCharge + vatAmount - discount;
+
   return (
-    <div>
-        
-           <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
-          <div className="flex items-center gap-4 mb-4">
-            <img
-              src={order.product.image}
-              alt={order.product.name}
-              className="w-20 h-20 object-cover rounded-md"
-            />
-            <div>
-              <p className="font-medium">{order.product.name}</p>
-              <p>৳ {order.product.price}</p>
-              <p>Qty:
-                <span onClick={()=>handleQuantity('-')}  className='border px-2 cursor-pointer '>-</span>
-                <span className='border px-2'>{order?.quantity}</span>
-                <span onClick={()=>handleQuantity('+')} className='border px-2 cursor-pointer'>+</span>
-              </p>
-            </div>
-          </div>
+    <div className="max-w-md mx-auto p-6 rounded-xl shadow-xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
+      <h3 className="text-2xl font-bold mb-6 border-b pb-2 text-gray-900 dark:text-gray-100">
+        Order Summary
+      </h3>
 
-          <div className="space-y-2 text-gray-700">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>৳ {subtotal.toFixed(2)}</span>
+      {/* Product list */}
+      <div className="space-y-4">
+        {carts.map((item) => (
+          <div
+            key={item.id}
+            className="flex gap-4 items-center bg-gray-100 dark:bg-gray-800 p-3 rounded-lg shadow-inner transition-colors"
+          >
+            <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden shadow-sm">
+              <Image
+                fill
+                src={item.image}
+                alt={item.name}
+                className="object-cover rounded-md"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
             </div>
-            <div className="flex justify-between">
-              <span>Shipping</span>
-              <span>৳ {order.shippingCharge.toFixed(2)}</span>
+            <div className="flex-1">
+              <p className="font-semibold text-gray-800 dark:text-gray-100">{item.name}</p>
+              <p className="text-gray-600 dark:text-gray-300">Price: ৳ {item.price.toFixed(2)}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <button
+                  onClick={() => decrease(item.id)}
+                  className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition"
+                >
+                  -
+                </button>
+                <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+                  {item.quantity}
+                </span>
+                <button
+                  onClick={() => increase(item.id)}
+                  className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition"
+                >
+                  +
+                </button>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Discount</span>
-              <span>- ৳ {order.discount.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>VAT ({(order.vatRate * 100).toFixed(1)}%)</span>
-              <span>৳ {vatAmount.toFixed(2)}</span>
-            </div>
-            <hr className="my-2" />
-            <div className="flex justify-between text-lg font-bold">
-              <span>Total</span>
-              <span>৳ {totalOrder.toFixed(2)}</span>
-            </div>
-            
           </div>
+        ))}
+      </div>
+
+      {/* Pricing details */}
+      <div className="mt-6 space-y-3 text-gray-700 dark:text-gray-300">
+        <div className="flex justify-between">
+          <span>Subtotal</span>
+          <span>৳ {subtotal.toFixed(2)}</span>
         </div>
+        <div className="flex justify-between">
+          <span>Discount (5%)</span>
+          <span>- ৳ {discount.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>VAT ({(vatRate * 100).toFixed(1)}%)</span>
+          <span>৳ {vatAmount.toFixed(2)}</span>
+        </div>
+
+        {/* Delivery selection */}
+        <div className="mt-4">
+          <label className="block mb-1 font-medium text-gray-800 dark:text-gray-200">
+            Delivery Area
+          </label>
+          <select
+            className="w-full border rounded-md p-2 text-gray-700 dark:text-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+            value={deliveryArea}
+            onChange={(e) => setDeliveryArea(e.target.value)}
+          >
+            <option value="dhaka">Dhaka</option>
+            <option value="outside">Outside Dhaka</option>
+          </select>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+            Delivery Charge: ৳ {deliveryCharge.toFixed(2)}
+          </p>
+        </div>
+
+        <hr className="my-3 border-gray-300 dark:border-gray-600" />
+
+        <div className="flex justify-between text-lg font-bold text-gray-900 dark:text-gray-100">
+          <span>Total</span>
+          <span>৳ {totalOrder.toFixed(2)}</span>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
