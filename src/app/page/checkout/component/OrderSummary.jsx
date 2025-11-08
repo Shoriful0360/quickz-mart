@@ -1,9 +1,10 @@
+'use client'
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decreaseQty, increaseQty } from '../../redux/cartsSlice';
+import { decreaseQty, increaseQty, removeFromCart } from '../../redux/cartsSlice';
 
-export default function OrderSummary() {
+export default function OrderSummary({setTotalProductPrice}) {
   const carts = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
@@ -13,6 +14,7 @@ export default function OrderSummary() {
 
   const increase = (id) => dispatch(increaseQty({ id }));
   const decrease = (id) => dispatch(decreaseQty({ id }));
+  const removeItem=(id)=>dispatch(removeFromCart({id}))
 
   const subtotal = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const deliveryCharge = deliveryArea === 'dhaka' ? dhakaCharge : outsideCharge;
@@ -20,6 +22,7 @@ export default function OrderSummary() {
   const vatAmount = subtotal * vatRate;
   const discount = subtotal * 0.05;
   const totalOrder = subtotal + deliveryCharge + vatAmount - discount;
+  setTotalProductPrice(totalOrder)
 
   return (
     <div className="max-w-md mx-auto p-6 rounded-xl shadow-xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
@@ -32,8 +35,14 @@ export default function OrderSummary() {
         {carts.map((item) => (
           <div
             key={item.id}
-            className="flex gap-4 items-center bg-gray-100 dark:bg-gray-800 p-3 rounded-lg shadow-inner transition-colors"
+            className="flex relative gap-4 items-center bg-gray-100 dark:bg-gray-800 p-3 rounded-lg shadow-inner transition-colors"
           >
+             <button
+    onClick={() => removeItem(item.id)}
+    className="absolute z-50 -top-2 right-0 text-red-500 text-2xl font-bold"
+  >
+    ×
+  </button>
             <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden shadow-sm">
               <Image
                 fill

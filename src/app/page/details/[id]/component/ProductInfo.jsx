@@ -200,7 +200,7 @@ export default function ProductInfo({ details }) {
 
           {/* 👕 Size Select */}
           <div>
-            <p className="font-semibold text-base sm:text-lg mb-2">Select Size:</p>
+           
               <div className="space-y-3">
       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
         Select Size:
