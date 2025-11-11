@@ -7,7 +7,12 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        rotate: 'rotate 5s linear infinite',
+        opacityChange: 'opacityChange 3s ease-in-out infinite alternate',
+      },
+    },
   },
   plugins: [],
-}
+};

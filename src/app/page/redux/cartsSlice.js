@@ -1,6 +1,6 @@
 'use client'
 const { createSlice } = require("@reduxjs/toolkit");
-const { default: Swal } = require("sweetalert2");
+import Swal from "sweetalert2";
 
 const getCartFromStorage = () => {
     if (typeof window !== 'undefined') {
@@ -25,16 +25,29 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            const item = state.items.find(i => i.id === action.payload.id);
+
+            const payload = JSON.parse(JSON.stringify(action.payload));
+            const item = state.items.find(i => i.id === payload.id);
+
+            console.log("payload", payload);
+            console.log("item", item);
+
             if (item) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
                     text: "Already Added To Cart!",
                 });
+              
             } else {
                 state.items.push(action.payload);
                 state.totalPrice = calculateTotalPrice(state.items); // Recalculate total
+                // show modal
+                Swal.fire({
+                    icon: "success",
+                    title: "Added to Cart",
+                    text: `${action.payload.name} (${action.payload.size.toUpperCase()}) added successfully!`,
+                });
                 if (typeof window !== "undefined") {
                     localStorage.setItem('cart', JSON.stringify(state.items))
                 }
@@ -42,8 +55,8 @@ const cartSlice = createSlice({
         },
         increaseQty: (state, action) => {
             const item = state.items.find(i => i.id === action.payload.id)
-            if(item.quantity === item.stock){
-               Swal.fire({
+            if (item.quantity === item.stock) {
+                Swal.fire({
                     icon: "warning",
                     title: "Oops...",
                     text: "stock not available!",

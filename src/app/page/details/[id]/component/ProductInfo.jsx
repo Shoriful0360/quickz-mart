@@ -52,7 +52,7 @@ export default function ProductInfo({ details }) {
     setProducts((prev) => ({ ...prev, size }));
         setAvailableStock(products.stock[size]); 
   };
-  console.log('first',availableStock)
+
 
   // ✅ handle quantity increment/decrement with stock check
   const handleCount = (type) => {
@@ -112,11 +112,7 @@ export default function ProductInfo({ details }) {
     };
 
     dispatch(addToCart(productToAdd));
-    Swal.fire({
-      icon: "success",
-      title: "Added to Cart",
-      text: `${products.name} (${products.size.toUpperCase()}) added successfully!`,
-    });
+    
   };
 
   return (

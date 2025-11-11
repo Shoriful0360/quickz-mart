@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decreaseQty, increaseQty, removeFromCart } from '../../redux/cartsSlice';
 
@@ -22,7 +22,10 @@ export default function OrderSummary({setTotalProductPrice}) {
   const vatAmount = subtotal * vatRate;
   const discount = subtotal * 0.05;
   const totalOrder = subtotal + deliveryCharge + vatAmount - discount;
-  setTotalProductPrice(totalOrder)
+  useEffect(()=>{
+    setTotalProductPrice(totalOrder)
+  },[totalOrder])
+ 
 
   return (
     <div className="max-w-md mx-auto p-6 rounded-xl shadow-xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
@@ -49,6 +52,7 @@ export default function OrderSummary({setTotalProductPrice}) {
                 src={item.image}
                 alt={item.name}
                 className="object-cover rounded-md"
+                priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             </div>
