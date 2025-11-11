@@ -1,6 +1,11 @@
-import React from 'react';
 
-const PurchaseModal = ({isModal,firstName,lastName,setIsModal}) => {
+'use client'
+
+import { useRouter } from "next/navigation";
+
+
+const PurchaseModal = ({isModal,lastName,firstName,setIsModal,onClose}) => {
+    const router=useRouter
     if(!isModal) return null
     return (
          <div className="fixed inset-0 flex justify-center items-center z-50">
@@ -9,10 +14,10 @@ const PurchaseModal = ({isModal,firstName,lastName,setIsModal}) => {
 
   {/* Centered spinning box */}
   <div className="relative box flex flex-col justify-center items-center p-8">
-    <p>🎉 Congratulations! {firstName} {lastName}</p>
+    <p>🎉 Congratulations! <br /> {firstName} {lastName}</p>
     <p className="text-gray-200 text-sm mt-4">Your purchase was successful 💳</p>
     <button
-      onClick={() => setIsModal(false)}
+      onClick={onClose}
       className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-300"
     >
       Continue Shopping

@@ -8,7 +8,6 @@ import PurchaseModal from "@/app/modal/PurchaseModal";
 
 export default function CheckoutForm({ totalProductPrice }) {
   const carts = useSelector((state) => state.cart.items);
-  console.log('carts',carts)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -26,9 +25,15 @@ export default function CheckoutForm({ totalProductPrice }) {
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
   const [unions, setUnions] = useState([]);
-  const[isModal,setIsmodal]=useState(false)
-const router=useRouter()
-const dispatch=useDispatch()
+  const [isModal, setIsmodal] = useState(false)
+  const router = useRouter()
+  const dispatch = useDispatch()
+
+    const handleCloseModal = () => {
+    setIsmodal(false);
+    router.push("/"); // modal বন্ধ হলে home পেজে redirect
+  };
+
   // Load all divisions initially
   useEffect(() => {
     fetch("https://bdapi.vercel.app/api/v.1/division")
@@ -129,20 +134,20 @@ const dispatch=useDispatch()
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     const filteredCarts = carts.map((item) => ({
-    productId: item.id,
-    name: item.name,
-    code: item.code,
-    price: totalProductPrice,
-  }));
-  const { divisionId, districtId, upazilaId, unionId, ...filteredForm } = form;
-  // Final order object
-  const order = {
-    userInfo:filteredForm,
-    ProductsInfo: filteredCarts,
-  };
+    const filteredCarts = carts.map((item) => ({
+      productId: item.id,
+      name: item.name,
+      code: item.code,
+      price: totalProductPrice,
+    }));
+    const { divisionId, districtId, upazilaId, unionId, ...filteredForm } = form;
+    // Final order object
+    const order = {
+      userInfo: filteredForm,
+      ProductsInfo: filteredCarts,
+    };
 
     const response = await fetch("/api/order", {
       method: "POST",
@@ -152,13 +157,13 @@ const dispatch=useDispatch()
       body: JSON.stringify(order),
     });
 
-const result=await response.json()
-if(result.orderId){
-  localStorage.setItem('purchase',JSON.stringify(order))
-  dispatch(clearCart())
- setIsmodal(true)
-}
-    
+    const result = await response.json()
+    if (result.orderId) {
+      localStorage.setItem('purchase', JSON.stringify(order))
+      dispatch(clearCart())
+      setIsmodal(true)
+    }
+
   };
 
   return (
@@ -279,7 +284,7 @@ if(result.orderId){
         <button
           type="submit"
           disabled={carts.length === 0}
-  className={`w-full text-white py-3 px-6 rounded-lg relative overflow-hidden text-lg font-semibold
+          className={`w-full text-white py-3 px-6 rounded-lg relative overflow-hidden text-lg font-semibold
     bg-gradient-to-r from-green-500 to-green-700
     hover:from-green-600 hover:to-green-800
     transition-all duration-300
@@ -291,7 +296,7 @@ if(result.orderId){
           <span className="absolute top-0 left-0 w-0 h-full bg-white opacity-10 hover:w-full transition-all duration-500"></span>
         </button>
       </form>
-      <PurchaseModal setIsModal={setIsmodal} isModal={isModal} lastName={form.lastName} firstName={form.lastName}/>
+      <PurchaseModal setIsModal={setIsmodal} isModal={isModal} lastName={form.lastName} firstName={form.firstName} onClose={handleCloseModal} />
     </div>
   );
 }
