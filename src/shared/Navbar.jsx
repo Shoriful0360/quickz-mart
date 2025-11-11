@@ -60,6 +60,7 @@ export default function Navbar() {
     { href: "/page/shirt", label: "Shirt" },
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
+    { href: "/page/dashboard", label: "Dashboard" },
   ]
 
   // Cart count component to avoid hydration issues
