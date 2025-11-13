@@ -1,5 +1,7 @@
 "use client";
+import PrivateRoute from "@/app/route/PrivateRoute";
 import { FaBoxOpen, FaSpinner, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 
 const gradientMap = {
@@ -17,8 +19,12 @@ const stats = [
 ];
 
 export default function CustomerDashboard() {
+const loading=useSelector((state)=>state.auth.loading)
+if(loading) return <p>Loading ....</p>
+
   return (
-    <div className="min-h-screen transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 text-gray-800 dark:from-[#0f172a] dark:via-[#111827] dark:to-[#0b1320] dark:text-gray-100 py-16 px-6">
+    <PrivateRoute>
+      <div className="min-h-screen transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 text-gray-800 dark:from-[#0f172a] dark:via-[#111827] dark:to-[#0b1320] dark:text-gray-100 py-16 px-6">
       <h1 className="text-4xl font-bold text-center mb-12 tracking-wide dark:text-gray-100 text-gray-900">
         🛍️ Customer Dashboard
       </h1>
@@ -99,5 +105,6 @@ export default function CustomerDashboard() {
      
 
     </div>
+    </PrivateRoute>
   );
 }

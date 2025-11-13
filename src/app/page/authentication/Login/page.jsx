@@ -13,10 +13,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useDispatch } from "react-redux"
-import { logIn } from "../../redux/authAction"
+import { logIn, loginWithGoogle } from "../../redux/authAction"
+import { useRouter } from "next/navigation"
 
 export default function Login() {
   const dispatch=useDispatch()
+  const router=useRouter()
+
+
   // handle login
   const handleLogin=async(e)=>{
 e.preventDefault()
@@ -24,6 +28,16 @@ const email=e.target.email.value;
 const password=e.target.password.value;
  dispatch(logIn(email,password))
   }
+
+  // log in with goolge
+    const handleGoogleLogin = async () => {
+    try {
+      dispatch(loginWithGoogle()); // wait for login
+      router.push("/"); // login successful হলে redirect
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className=" min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm mx-auto">
@@ -72,9 +86,13 @@ const password=e.target.password.value;
           </div>
            
         </form>
-          <Button variant="outline" className="w-full mt-2">
-          Login with Google
-        </Button>
+            <Button
+      onClick={handleGoogleLogin}
+      variant="outline"
+      className="w-full mt-2"
+    >
+      Login with Google
+    </Button>
       </CardContent>
   
     </Card>

@@ -3,29 +3,57 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decreaseQty, increaseQty, removeFromCart } from '../../redux/cartsSlice';
+import { useSearchParams } from 'next/navigation';
 
-export default function OrderSummary({setTotalProductPrice}) {
+export default function OrderSummary({ setTotalProductPrice,Singleproduct }) {
   const carts = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   const [deliveryArea, setDeliveryArea] = useState('dhaka');
+  const [products, setProducts] = useState([]); // will store either cart array or single fetched product
+  const searchParams = useSearchParams();
+  const buyId = searchParams.get('id');
+  const quantity=searchParams.get('quantity')
+
+
   const dhakaCharge = 50;
   const outsideCharge = 150;
-
+// upate product quantity and price
   const increase = (id) => dispatch(increaseQty({ id }));
   const decrease = (id) => dispatch(decreaseQty({ id }));
-  const removeItem=(id)=>dispatch(removeFromCart({id}))
+  const removeItem = (id) => dispatch(removeFromCart({ id }));
 
-  const subtotal = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // 🔹 Fetch logic: if buyId exists, fetch single product; else use Redux cart
+  useEffect(() => {
+    async function loadData() {
+      if (Singleproduct) {
+   
+
+        // convert single object to array for consistent rendering
+        setProducts([{ ...Singleproduct, quantity: quantity }]);
+      } else {
+        setProducts(carts);
+      }
+    }
+    loadData();
+  }, [Singleproduct, carts]);
+
+  // 🔹 subtotal calculation
+  const subtotal = products.reduce(
+    (acc, item) => acc + item.price * (item.quantity || 1),
+    0
+  );
   const deliveryCharge = deliveryArea === 'dhaka' ? dhakaCharge : outsideCharge;
   const vatRate = 0;
   const vatAmount = subtotal * vatRate;
   const discount = subtotal * 0.05;
   const totalOrder = subtotal + deliveryCharge + vatAmount - discount;
-  useEffect(()=>{
-    setTotalProductPrice(totalOrder)
-  },[totalOrder])
- 
+
+  useEffect(() => {
+    setTotalProductPrice(totalOrder);
+  }, [totalOrder]);
+
+  if (products.length === 0) return <p className="text-center mt-5">No products found.</p>;
 
   return (
     <div className="max-w-md mx-auto p-6 rounded-xl shadow-xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
@@ -35,47 +63,54 @@ export default function OrderSummary({setTotalProductPrice}) {
 
       {/* Product list */}
       <div className="space-y-4">
-        {carts.map((item) => (
+        {products.map((item) => (
           <div
-            key={item.id}
+            key={item._id || item.id}
             className="flex relative gap-4 items-center bg-gray-100 dark:bg-gray-800 p-3 rounded-lg shadow-inner transition-colors"
           >
-             <button
-    onClick={() => removeItem(item.id)}
-    className="absolute z-50 -top-2 right-0 text-red-500 text-2xl font-bold"
-  >
-    ×
-  </button>
+            {!buyId && (
+              <button
+                onClick={() => removeItem(item.id)}
+                className="absolute z-50 -top-2 right-0 text-red-500 text-2xl font-bold"
+              >
+                ×
+              </button>
+            )}
             <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden shadow-sm">
               <Image
                 fill
-                src={item.image}
+                src={item.image || item.img}
                 alt={item.name}
                 className="object-cover rounded-md"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             </div>
             <div className="flex-1">
               <p className="font-semibold text-gray-800 dark:text-gray-100">{item.name}</p>
-              <p className="text-gray-600 dark:text-gray-300">Price: ৳ {item.price.toFixed(2)}</p>
-              <div className="flex items-center gap-2 mt-2">
-                <button
-                  onClick={() => decrease(item.id)}
-                  className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition"
-                >
-                  -
-                </button>
-                <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
-                  {item.quantity}
-                </span>
-                <button
-                  onClick={() => increase(item.id)}
-                  className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition"
-                >
-                  +
-                </button>
-              </div>
+              <p className="text-gray-600 dark:text-gray-300">
+                Price: ৳ {(item.price ||0).toFixed(2)}
+              </p>
+
+              {!buyId && (
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => decrease(item.id)}
+                    className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition"
+                  >
+                    -
+                  </button>
+                  <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => increase(item.id)}
+                    className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -85,11 +120,11 @@ export default function OrderSummary({setTotalProductPrice}) {
       <div className="mt-6 space-y-3 text-gray-700 dark:text-gray-300">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>৳ {subtotal.toFixed(2)}</span>
+          <span>৳ {(subtotal ||0).toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span>Discount (5%)</span>
-          <span>- ৳ {discount.toFixed(2)}</span>
+          <span>- ৳ {(discount ||0).toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span>VAT ({(vatRate * 100).toFixed(1)}%)</span>

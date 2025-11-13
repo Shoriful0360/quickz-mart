@@ -21,7 +21,7 @@ import { MdOutlineShoppingCartCheckout } from "react-icons/md"
 export default function Navbar() {
   const pathname = usePathname()
   const dispatch = useDispatch()
-  const user = useSelector(state => state.auth.user)
+  const {user,loading} = useSelector(state => state.auth)
   const carts = useSelector(state => state.cart.items)
 
   const [darkmode, setDarkmode] = useState(false)
@@ -53,6 +53,9 @@ export default function Navbar() {
     }
   }, [darkmode])
 
+
+ 
+
   const links = [
     { href: "/", label: "Home" },
     { href: "/page/atar", label: "Atar" },
@@ -60,7 +63,8 @@ export default function Navbar() {
     { href: "/page/shirt", label: "Shirt" },
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
-    { href: "/page/dashboard", label: "Dashboard" },
+    user? { href: "/page/dashboard", label: "Dashboard", }:''
+ 
   ]
 
   // Cart count component to avoid hydration issues
@@ -85,9 +89,10 @@ export default function Navbar() {
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
             <NavigationMenuItem className="flex items-center gap-4 font-medium">
-              {links.map(link => (
+              {links.map((link,idx) => (
+            
                 <NavigationMenuLink
-                  key={link.href}
+                  key={idx}
                   href={link.href}
                   className={`text-lg hover:text-red-500 ${
                     pathname === link.href ? "text-red-500 font-bold" : "text-gray-800 dark:text-white"

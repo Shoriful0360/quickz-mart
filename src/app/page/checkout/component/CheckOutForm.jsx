@@ -6,13 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../../redux/cartsSlice";
 import PurchaseModal from "@/app/modal/PurchaseModal";
 
-export default function CheckoutForm({ totalProductPrice }) {
+export default function CheckoutForm({ totalProductPrice}) {
+
+ 
   const carts = useSelector((state) => state.cart.items);
+  const user=useSelector((state)=>state.auth.user)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phone: "",
-    email: "",
+    email: user?.email,
     division: "",
     district: "",
     upazila: "",
@@ -39,7 +42,7 @@ export default function CheckoutForm({ totalProductPrice }) {
     fetch("https://bdapi.vercel.app/api/v.1/division")
       .then((res) => res.json())
       .then((data) => setDivisions(data.data))
-      .catch((err) => console.error("Division fetch error:", err));
+      
   }, []);
 
   // Load districts when division changes
@@ -62,7 +65,7 @@ export default function CheckoutForm({ totalProductPrice }) {
       fetch(`https://bdapi.vercel.app/api/v.1/upazilla/${form.districtId}`)
         .then((res) => res.json())
         .then((data) => setUpazilas(data.data))
-        .catch((err) => console.error("Upazila fetch error:", err));
+      
     } else {
       setUpazilas([]);
       setUnions([]);
@@ -75,7 +78,7 @@ export default function CheckoutForm({ totalProductPrice }) {
       fetch(`https://bdapi.vercel.app/api/v.1/union/${form.upazilaId}`)
         .then((res) => res.json())
         .then((data) => setUnions(data.data))
-        .catch((err) => console.error("Union fetch error:", err));
+      
     } else {
       setUnions([]);
     }
@@ -113,6 +116,9 @@ export default function CheckoutForm({ totalProductPrice }) {
       unionId: "",
     }));
   };
+
+
+
 
   const handleUpazilaChange = (e) => {
     const selected = upazilas.find((u) => u.id == e.target.value);
@@ -205,8 +211,8 @@ export default function CheckoutForm({ totalProductPrice }) {
             required
             name="email"
             placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
+            value={user?.email}
+            readOnly
             className="border p-2 rounded-md dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
@@ -281,20 +287,23 @@ export default function CheckoutForm({ totalProductPrice }) {
         />
 
         {/* Place Order Button with unique design */}
-        <button
-          type="submit"
-          disabled={carts.length === 0}
-          className={`w-full text-white py-3 px-6 rounded-lg relative overflow-hidden text-lg font-semibold
-    bg-gradient-to-r from-green-500 to-green-700
-    hover:from-green-600 hover:to-green-800
-    transition-all duration-300
-    ${carts.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
-          <span className="inline-block mr-4">Place Order</span>
-          <span className="inline-block bg-white text-green-700 font-bold px-3 py-1 rounded-full shadow-md">
-            TK {totalProductPrice}
-          </span>
-          <span className="absolute top-0 left-0 w-0 h-full bg-white opacity-10 hover:w-full transition-all duration-500"></span>
-        </button>
+    <button
+      type="submit"
+     
+      className={`w-full text-white py-3 px-6 rounded-lg relative overflow-hidden text-lg font-semibold
+      bg-gradient-to-r from-green-500 to-green-700
+      hover:from-green-600 hover:to-green-800
+      transition-all duration-300
+    `}
+    >
+      <span className="inline-block mr-4">Place Order</span>
+      <span className="inline-block bg-white text-green-700 font-bold px-3 py-1 rounded-full shadow-md">
+        TK {totalProductPrice || 0}
+      </span>
+      <span className="absolute top-0 left-0 w-0 h-full bg-white opacity-10 hover:w-full transition-all duration-500"></span>
+    </button>
+
+
       </form>
       <PurchaseModal setIsModal={setIsmodal} isModal={isModal} lastName={form.lastName} firstName={form.firstName} onClose={handleCloseModal} />
     </div>

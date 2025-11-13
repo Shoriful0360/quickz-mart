@@ -1,5 +1,5 @@
 import { auth } from "@/app/fairebase/firebase.init"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth"
 import { logout, setLoading, setUser } from "./slice";
 
 
@@ -66,3 +66,25 @@ export const logIn=(email,password)=>async(dispatch)=>{
         dispatch(setLoading(false))
     }
 }
+
+
+// login with google
+ export const loginWithGoogle=()=>async(dispatch)=>{
+    const provider=new GoogleAuthProvider()
+    try {
+        dispatch(setLoading(true))
+        const userCredential=await signInWithPopup(auth,provider)
+        const result=userCredential.user
+        dispatch(
+            setUser({
+                name:result.displayName || '',
+                email:result.email,
+                phone:result.phoneNumber || ''
+            })
+        )
+    } catch (error) {
+        console.error("Google login error:", error.message); 
+    }finally{
+        dispatch(setLoading(false))
+    }
+ }
