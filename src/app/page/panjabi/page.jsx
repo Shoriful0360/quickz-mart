@@ -5,7 +5,7 @@ import dbConnect, { collectionNameObj } from '@/sever/connect';
 
 
 export default async function Panjabi() {
-  const products=dbConnect(collectionNameObj.productCollection)
+  const products=await dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:'Panjabi'}).toArray()
   const PanjabiCollections=JSON.parse(JSON.stringify(data))
   return (

@@ -5,7 +5,7 @@ import dbConnect, { collectionNameObj } from '@/sever/connect';
 
 
 const AtarPage =async() => {
-  const products= dbConnect(collectionNameObj.productCollection)
+  const products=await dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:'Attar'}).toArray()
   const atarCollection=JSON.parse(JSON.stringify(data))
 

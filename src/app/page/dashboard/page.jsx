@@ -1,26 +1,37 @@
 "use client";
 import PrivateRoute from "@/app/route/PrivateRoute";
-import { FaBoxOpen, FaSpinner, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaBoxOpen, FaSpinner, FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 
 const gradientMap = {
   Total: "linear-gradient(135deg, #00C9FF 0%, #0072ff 100%)", // blue tone
+    Pending: "linear-gradient(135deg, #A770EF 0%, #FDB99B 100%)",
   Processing: "linear-gradient(135deg, #F7971E 0%, #FFD200 100%)", // yellow tone
   Completed: "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)", // green tone
   Cancelled: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)", // red tone
 };
 
+
+export default function CustomerDashboard() {
+const {user,loading}=useSelector((state)=>state.auth)
+const[products,setProducts]=useState([])
+
+useEffect(()=>{
+  fetch(`/api/order/${user?.email}`)
+  .then(res=>res.json())
+  .then(data=>setProducts(data))
+  
+},[user?.email])
+if(loading) return <p>Loading ....</p>
 const stats = [
-  { title: "Total Orders", value: 152, icon: <FaBoxOpen size={28} />, type: "Total" },
+  { title: "Total Orders", value:(products?.length), icon: <FaBoxOpen size={28} />, type: "Total" },
+   { title: "Pending", value: 45, icon: <FaClock size={28} />, type: "Pending" }, 
   { title: "Processing", value: 23, icon: <FaSpinner size={28} className="animate-spin-slow" />, type: "Processing" },
   { title: "Completed", value: 112, icon: <FaCheckCircle size={28} />, type: "Completed" },
   { title: "Cancelled", value: 17, icon: <FaTimesCircle size={28} />, type: "Cancelled" },
 ];
-
-export default function CustomerDashboard() {
-const loading=useSelector((state)=>state.auth.loading)
-if(loading) return <p>Loading ....</p>
 
   return (
     <PrivateRoute>

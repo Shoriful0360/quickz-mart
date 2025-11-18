@@ -4,7 +4,7 @@ import dbConnect, { collectionNameObj } from '@/sever/connect';
 
 
 const PantTrouser =async () => {
-  const products=dbConnect(collectionNameObj.productCollection)
+  const products= await dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:'Pant&Trouser'}).toArray()
   const pantTrouserCollctions=JSON.parse(JSON.stringify(data))
     return (

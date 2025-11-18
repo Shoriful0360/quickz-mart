@@ -147,6 +147,7 @@ export default function CheckoutForm({ totalProductPrice}) {
       name: item.name,
       code: item.code,
       price: totalProductPrice,
+      status:"Pending"
     }));
     const { divisionId, districtId, upazilaId, unionId, ...filteredForm } = form;
     // Final order object

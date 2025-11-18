@@ -3,7 +3,7 @@ import ProductCard from '../home/component/Card';
 import dbConnect, { collectionNameObj } from '@/sever/connect';
 
 export default async function page() {
-  const products=dbConnect(collectionNameObj.productCollection)
+  const products=await dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:'Shirt'}).toArray()
   const shirtCollections=JSON.parse(JSON.stringify(data))
   return (

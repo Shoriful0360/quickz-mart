@@ -1,41 +1,30 @@
+import { MongoClient, ServerApiVersion } from "mongodb";
 
-// import{ MongoClient, ServerApiVersion } from 'mongodb';
-// const uri=process.env.MONGO_URI;
+const uri = process.env.MONGO_URI;
 
-// export const collectionNameObj={
-//     productCollection:'products'
-// }
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true
+  }
+});
 
+let clientPromise;
 
-
-// export default async function dbConnect(collection){
-//     const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   }
-// });
-
-// return client.db('quickmart').collection(collection)
-// }
-
-import { MongoClient, ServerApiVersion } from 'mongodb'
-const uri = process.env.MONGO_URI
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-export const collectionNameObj={
-  productCollection:'products',
-  orderCollection:'Orders'
+if (!global._mongoClientPromise) {
+  global._mongoClientPromise = client.connect(); // Connect only once
 }
-export default function dbConnect(collection){
-    
-    const client = new MongoClient(uri, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      }
-    });
 
-    return client.db('quickmart').collection(collection)
+clientPromise = global._mongoClientPromise;
+
+export const collectionNameObj = {
+  productCollection: "products",
+  orderCollection: "Orders",
+};
+
+export default async function dbConnect(collection) {
+  const mongoClient = await clientPromise; // Wait for ready connection
+  const db = mongoClient.db("quickmart");
+  return db.collection(collection);
 }

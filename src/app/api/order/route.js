@@ -10,8 +10,13 @@ export  async function POST(req) {
    try {
 
       const body = await req.json()
+
+      const newOrder={
+        ...body,
+        status:'Pending'
+      }
     const orders=dbConnect(collectionNameObj.orderCollection)
-    const result=await orders.insertOne(body)
+    const result=await orders.insertOne(newOrder)
     return NextResponse.json({
       message:"order created successfully",
       orderId:result.insertedId
@@ -35,8 +40,12 @@ export async function GET(req, { params }) {
     // 🔹 Extract id from URL
     const { id } = params;
 
+
     // 🔹 Connect to MongoDB
     const db = dbConnect(collectionNameObj.orderCollection);
+
+
+
 
     // 🔹 Convert to ObjectId and find one document
     const order = await db.findOne({ _id: new ObjectId(id) });

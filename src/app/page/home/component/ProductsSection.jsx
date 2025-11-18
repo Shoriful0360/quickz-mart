@@ -7,7 +7,7 @@ import ProductCard from "./Card";
 
 export default async function ProductsSection() {
 
-  const productsCollection=dbConnect(collectionNameObj.productCollection)
+  const productsCollection=await dbConnect(collectionNameObj.productCollection)
   const data=await productsCollection.find()
   .sort({_id:-1})
   .limit(5)

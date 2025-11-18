@@ -5,7 +5,7 @@ import dbConnect, { collectionNameObj } from '@/sever/connect';
 
 
 export default async function T_Shirt() {
-  const products=dbConnect(collectionNameObj.productCollection)
+  const products=await dbConnect(collectionNameObj.productCollection)
   const data=await products.find({category:"T-Shirt"}).toArray()
   const t_shirtCollection=JSON.parse(JSON.stringify(data))
   return (

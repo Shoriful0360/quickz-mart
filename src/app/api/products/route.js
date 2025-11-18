@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
-  console.log('request',request)
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
