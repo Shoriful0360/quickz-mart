@@ -7,9 +7,10 @@ import React from 'react'
 import ProductInfo from './component/ProductInfo';
 import ProductCard from '../../home/component/Card';
 export default async function DetailsPage({params}) {
- const {id}=await params
+ const {id}= params
 
-  const product=dbConnect(collectionNameObj.productCollection)
+
+  const product=await dbConnect(collectionNameObj.productCollection)
   const data=await product.findOne({_id:new ObjectId(id)})
   const safeData=JSON.parse(JSON.stringify(data))
 

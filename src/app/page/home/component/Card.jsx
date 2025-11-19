@@ -52,9 +52,12 @@ export default function ProductCard({detail}) {
   <button className="my-button">
     Details
   </button></Link>
-  <button className="my-button-green " >
+  <Link href={`/page/checkout?id=${_id}&quantity=1`} >
+    <button className="my-button-green " >
     Buy
   </button>
+  </Link>
+
 </div>
       </div>
     </div>

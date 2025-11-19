@@ -12,6 +12,7 @@ import atar from "@/app/asset/atar.png";
 import pantTrouser from "@/app/asset/pant&trouser.png";
 import shirt from "@/app/asset/shirt.png";
 import { addToCart } from "@/app/page/redux/cartsSlice";
+import { useRouter } from "next/navigation";
 
 
 export default function ProductInfo({ details }) {
@@ -23,7 +24,7 @@ export default function ProductInfo({ details }) {
   const [url, setUrl] = useState(img);
     const [selectedSize, setSelectedSize] = useState(null);
   const [availableStock, setAvailableStock] = useState(null)
-
+const router=useRouter()
   // ✅ initial product state
   const [products, setProducts] = useState({
     id: _id,
@@ -114,6 +115,19 @@ export default function ProductInfo({ details }) {
     dispatch(addToCart(productToAdd));
     
   };
+
+  // buy now button
+  const handleBuy=(id)=>{
+       if (!products.size) {
+      Swal.fire({
+        icon: "warning",
+        title: "Please Select a Size",
+        text: "Choose your preferred size before adding to cart.",
+      });
+      return;
+    }
+router.push(`/page/checkout?id=${id}&quantity=${products.sizeQuantities[products.size]}` )
+  }
 
   return (
     <div className="w-full  mx-auto mt-10 px-4 lg:px-0 space-y-10 bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-500">
@@ -301,11 +315,13 @@ export default function ProductInfo({ details }) {
               🛒 Add to Cart
             </button>
 
-            <Link href={`/page/checkout?id=${_id}&quantity=${products.sizeQuantities[products.size]}`} className="flex-1">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition text-center">
+       
+              <button
+              onClick={()=>handleBuy(_id)}
+              className="w-full bg-blue-600 hover:bg-blue-700 flex-1 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition text-center">
                 ⚡ Buy Now
               </button>
-            </Link>
+         
           </div>
         </div>
       </div>

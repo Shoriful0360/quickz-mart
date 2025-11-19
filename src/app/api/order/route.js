@@ -15,7 +15,7 @@ export  async function POST(req) {
         ...body,
         status:'Pending'
       }
-    const orders=dbConnect(collectionNameObj.orderCollection)
+    const orders=await dbConnect(collectionNameObj.orderCollection)
     const result=await orders.insertOne(newOrder)
     return NextResponse.json({
       message:"order created successfully",

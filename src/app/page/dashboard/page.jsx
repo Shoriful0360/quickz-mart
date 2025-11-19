@@ -18,21 +18,33 @@ export default function CustomerDashboard() {
 const {user,loading}=useSelector((state)=>state.auth)
 const[products,setProducts]=useState([])
 
-useEffect(()=>{
-  fetch(`/api/order/${user?.email}`)
-  .then(res=>res.json())
-  .then(data=>setProducts(data))
-  
-},[user?.email])
+useEffect(() => {
+  if (!user?.email) return;
+
+  fetch(`/api/order/${user.email}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("API Response =", data);
+
+      // Always ensure `products` is an array
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else if (Array.isArray(data.orders)) {
+        setProducts(data.orders);
+      } else {
+        setProducts([]); // Fallback
+      }
+    });
+}, [user?.email]);
 if(loading) return <p>Loading ....</p>
 const stats = [
-  { title: "Total Orders", value:(products?.length), icon: <FaBoxOpen size={28} />, type: "Total" },
-   { title: "Pending", value: 45, icon: <FaClock size={28} />, type: "Pending" }, 
-  { title: "Processing", value: 23, icon: <FaSpinner size={28} className="animate-spin-slow" />, type: "Processing" },
-  { title: "Completed", value: 112, icon: <FaCheckCircle size={28} />, type: "Completed" },
-  { title: "Cancelled", value: 17, icon: <FaTimesCircle size={28} />, type: "Cancelled" },
+  { title: "Total Orders", value:(products?.length || 0), icon: <FaBoxOpen size={28} />, type: "Total" },
+   { title: "Pending", value: (products?.filter(p=>p.status==="Pending")?.length || 0), icon: <FaClock size={28} />, type: "Pending" }, 
+  { title: "Processing",value: (products?.filter(p=>p.status==="Processing")?.length || 0), icon: <FaSpinner size={28} className="animate-spin-slow" />, type: "Processing" },
+  { title: "Completed", value: (products?.filter(p=>p.status==="Completed")?.length || 0), icon: <FaCheckCircle size={28} />, type: "Completed" },
+  { title: "Cancelled", value: (products?.filter(p=>p.status==="Cancelled")?.length || 0), icon: <FaTimesCircle size={28} />, type: "Cancelled" },
 ];
-
+console.log('products',products)
   return (
     <PrivateRoute>
       <div className="min-h-screen transition-colors duration-500 bg-gradient-to-br from-gray-100 via-white to-gray-200 text-gray-800 dark:from-[#0f172a] dark:via-[#111827] dark:to-[#0b1320] dark:text-gray-100 py-16 px-6">

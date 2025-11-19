@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../../redux/cartsSlice";
 import PurchaseModal from "@/app/modal/PurchaseModal";
 
-export default function CheckoutForm({ totalProductPrice}) {
+export default function CheckoutForm({ totalProductPrice,Singleproduct}) {
 
  
   const carts = useSelector((state) => state.cart.items);
@@ -23,7 +23,7 @@ export default function CheckoutForm({ totalProductPrice}) {
     address: "",
     orderNote: "",
   });
-
+ 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
@@ -36,6 +36,13 @@ export default function CheckoutForm({ totalProductPrice}) {
     setIsmodal(false);
     router.push("/"); // modal বন্ধ হলে home পেজে redirect
   };
+
+// update form
+useEffect(() => {
+  if (user?.email) {
+    setForm((prev) => ({ ...prev, email: user.email }));
+  }
+}, [user]);
 
   // Load all divisions initially
   useEffect(() => {
@@ -141,14 +148,27 @@ export default function CheckoutForm({ totalProductPrice}) {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
-    const filteredCarts = carts.map((item) => ({
+
+    let filteredCarts=[]
+    if(carts && carts.length > 0){
+     filteredCarts = carts.map((item) => ({
       productId: item.id,
       name: item.name,
       code: item.code,
       price: totalProductPrice,
-      status:"Pending"
+     
     }));
+    }else{
+      filteredCarts={
+          productId: Singleproduct._id,
+      name: Singleproduct.name,
+      code: Singleproduct.code,
+      price: totalProductPrice,
+      }
+    }
+
     const { divisionId, districtId, upazilaId, unionId, ...filteredForm } = form;
     // Final order object
     const order = {

@@ -7,7 +7,7 @@ export async function GET(req, { params }) {
     const { email } =await params;
 
     // 🔹 Connect to MongoDB
-    const db = dbConnect(collectionNameObj.orderCollection);
+    const db =await dbConnect(collectionNameObj.orderCollection);
 
     // 🔹 Convert to ObjectId and find one document
     const order = await db.find({ 'userInfo.email': email }).toArray();
