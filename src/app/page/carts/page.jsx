@@ -18,7 +18,6 @@ const CartPage = () => {
  dispatch(increaseQty({id}))
   }
 
-  // Quantity decrease
   const decrease = (id) => {
    dispatch(decreaseQty({id}))
    
@@ -26,6 +25,7 @@ const CartPage = () => {
 const removeItem=(id)=>{
   dispatch(removeFromCart({id}))
 }
+
   // Calculate total price
   const totalPrice = carts.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
