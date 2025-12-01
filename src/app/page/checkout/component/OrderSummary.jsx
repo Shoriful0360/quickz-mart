@@ -11,7 +11,6 @@ export default function OrderSummary({ setTotalProductPrice, Singleproduct }) {
   const searchParams = useSearchParams();
   const buyId = searchParams.get('id');
   const quantity = Number(searchParams.get('quantity') || 1);
-  const [qty,setQty]=useState(0)
   const [products, setProducts] = useState([]);
   const [deliveryArea, setDeliveryArea] = useState('dhaka');
 

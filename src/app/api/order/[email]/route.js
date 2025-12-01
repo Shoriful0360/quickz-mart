@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
     const db =await dbConnect(collectionNameObj.orderCollection);
 
     // 🔹 Convert to ObjectId and find one document
-    const order = await db.find({ 'userInfo.email': email }).toArray();
+    const order = await db.find({ 'userInfo.email': email }).sort({_id:-1}).toArray();
 
     if (order.length===0) {
       return NextResponse.json(

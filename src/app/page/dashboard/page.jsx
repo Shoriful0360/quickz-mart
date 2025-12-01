@@ -37,6 +37,7 @@ useEffect(() => {
     });
 }, [user?.email]);
 if(loading) return <p>Loading ....</p>
+console.log('produ',products)
 const stats = [
   { title: "Total Orders", value:(products?.length || 0), icon: <FaBoxOpen size={28} />, type: "Total" },
    { title: "Pending", value: (products?.filter(p=>p.status==="Pending")?.length || 0), icon: <FaClock size={28} />, type: "Pending" }, 
@@ -92,18 +93,18 @@ console.log('products',products)
               </tr>
             </thead>
             <tbody>
-              {[
-                { id: "#A1023", product: "Smart Watch", amount: "$120", status: "Completed", date: "2025-11-09" },
-                { id: "#A1045", product: "Headphone", amount: "$60", status: "Processing", date: "2025-11-10" },
-                { id: "#A1066", product: "Shoes", amount: "$90", status: "Cancelled", date: "2025-11-08" },
-              ].map((order, i) => (
+              {products.map((order, i) => (
                 <tr
                   key={i}
                   className="hover:bg-gray-100/70 dark:hover:bg-white/10 transition-all duration-200 border-b border-gray-300 dark:border-white/10"
                 >
-                  <td className="py-3 px-4">{order.id}</td>
-                  <td className="py-3 px-4">{order.product}</td>
-                  <td className="py-3 px-4">{order.amount}</td>
+                  <td className="py-3 px-4">#{order._id.slice(-5)}</td>
+              <td className="py-3 px-4">
+  {Array.isArray(order?.ProductsInfo) 
+    ? order.ProductsInfo.map(item => item?.name).join(", ")
+    : order?.ProductsInfo?.name || "No products"}
+</td>
+                  <td className="py-3 px-4">Tk{order.price}</td>
                   <td className="py-3 px-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -117,7 +118,9 @@ console.log('products',products)
                       {order.status}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-gray-500 dark:text-gray-400">{order.date}</td>
+                   <td className="text-gray-500 dark:text-gray-400">
+      {new Date(parseInt(order._id.substring(0, 8), 16) * 1000).toLocaleDateString("en-GB")}
+    </td>
                 </tr>
               ))}
             </tbody>

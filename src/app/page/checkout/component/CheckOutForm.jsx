@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../../redux/cartsSlice";
 import PurchaseModal from "@/app/modal/PurchaseModal";
 
+
 export default function CheckoutForm({ totalProductPrice,Singleproduct}) {
 
  
@@ -157,7 +158,7 @@ useEffect(() => {
       productId: item.id,
       name: item.name,
       code: item.code,
-      price: totalProductPrice,
+    
      
     }));
     }else{
@@ -165,7 +166,7 @@ useEffect(() => {
           productId: Singleproduct._id,
       name: Singleproduct.name,
       code: Singleproduct.code,
-      price: totalProductPrice,
+    
       }
     }
 
@@ -173,7 +174,8 @@ useEffect(() => {
     // Final order object
     const order = {
       userInfo: filteredForm,
-      ProductsInfo: filteredCarts,
+      ProductsInfo: filteredCarts, 
+     price: totalProductPrice,
     };
 
     const response = await fetch("/api/order", {
@@ -192,6 +194,8 @@ useEffect(() => {
     }
 
   };
+
+  if(!Singleproduct && carts.length===0) return <p className="text-center">Please add product</p>
 
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-lg mt-6 max-w-2xl mx-auto transition-colors duration-300">
