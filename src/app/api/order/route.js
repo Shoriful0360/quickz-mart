@@ -35,22 +35,19 @@ export  async function POST(req) {
    }
 }
 
-export async function GET(req, { params }) {
+export async function GET() {
   try {
-    // 🔹 Extract id from URL
-    const { id } = params;
+
+ 
 
 
     // 🔹 Connect to MongoDB
-    const db = dbConnect(collectionNameObj.orderCollection);
+    const db =await dbConnect(collectionNameObj.orderCollection);
 
 
+ const orders=await db.find().toArray()
 
-
-    // 🔹 Convert to ObjectId and find one document
-    const order = await db.findOne({ _id: new ObjectId(id) });
-
-    if (!order) {
+    if (!orders) {
       return NextResponse.json(
         { message: "Order not found" },
         { status: 404 }
@@ -58,7 +55,7 @@ export async function GET(req, { params }) {
     }
 
     // 🔹 Return the order
-    return NextResponse.json(order, { status: 200 });
+    return NextResponse.json(orders, { status: 200 });
 
   } catch (error) {
     console.error("Error fetching order:", error);

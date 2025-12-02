@@ -1,7 +1,7 @@
 'use client'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Page = () => {
 
@@ -9,8 +9,15 @@ const Page = () => {
   { invoice: "INV001", status: "Pending", totalAmount: "$250.00" },
   { invoice: "INV007", status: "Processing", totalAmount: "$300.00" },
 ];
+const [orders,setOrders]=useState([])
+useEffect(() => {
+  fetch('/api/order')
+    .then(res => res.json())
+    .then(data => setOrders(data))
+    .catch(err => console.error(err));
+}, [])
 
-
+console.log('orders',orders)
   // Default status: all "Pending"
  const [statuses, setStatuses] = useState(
   invoices.map(invoice => invoice.status) // 👈 প্রতিটি invoice এর আগের status ধরে নিলাম

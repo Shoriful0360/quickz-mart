@@ -24,7 +24,7 @@ useEffect(() => {
   fetch(`/api/order/${user.email}`)
     .then(res => res.json())
     .then(data => {
-      console.log("API Response =", data);
+    
 
       // Always ensure `products` is an array
       if (Array.isArray(data)) {
