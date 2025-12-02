@@ -63,7 +63,8 @@ export default function Navbar() {
     { href: "/page/shirt", label: "Shirt" },
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
-    user? { href: "/page/dashboard", label: "Dashboard", }:''
+    user? { href: "/page/dashboard", label: "Dashboard", }:'',
+     { href: "/page/admin/manageOrder", label: "Order List" }
  
   ]
 

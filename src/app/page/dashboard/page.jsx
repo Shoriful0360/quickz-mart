@@ -37,7 +37,7 @@ useEffect(() => {
     });
 }, [user?.email]);
 if(loading) return <p>Loading ....</p>
-console.log('produ',products)
+
 const stats = [
   { title: "Total Orders", value:(products?.length || 0), icon: <FaBoxOpen size={28} />, type: "Total" },
    { title: "Pending", value: (products?.filter(p=>p.status==="Pending")?.length || 0), icon: <FaClock size={28} />, type: "Pending" }, 
@@ -81,7 +81,7 @@ console.log('products',products)
         <h2 className="text-2xl font-semibold mb-6 text-center text-gray-900 dark:text-gray-200">
           Recent Orders 📦
         </h2>
-        <div className="bg-white/70 dark:bg-[#1e293b]/50 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-white/10">
+        <div className="bg-white/70 dark:bg-[#1e293b]/50 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200 dark:border-white/10">
           <table className="w-full text-left text-gray-800 dark:text-gray-200">
             <thead className="bg-gray-200/70 dark:bg-white/10 uppercase text-sm tracking-wider">
               <tr>
