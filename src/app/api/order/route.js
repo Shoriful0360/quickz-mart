@@ -38,14 +38,11 @@ export  async function POST(req) {
 export async function GET() {
   try {
 
- 
-
-
     // 🔹 Connect to MongoDB
     const db =await dbConnect(collectionNameObj.orderCollection);
 
 
- const orders=await db.find().toArray()
+ const orders=await db.find().sort({_id:-1}).toArray()
 
     if (!orders) {
       return NextResponse.json(
