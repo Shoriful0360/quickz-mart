@@ -36,7 +36,7 @@ export async function GET(req, { params }) {
 
 export async function PUT(req, { params }) {
     try {
-        const { email } = params;
+        const { email:id } = params;
         const { status } = await req.json();
         const db = await dbConnect(collectionNameObj.orderCollection);
         const result = await db.updateOne(

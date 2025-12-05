@@ -37,7 +37,7 @@ const router=useRouter()
     sizeQuantities: { m: 1, l: 1, xl: 1, xxl: 1 },
     stock: stock, // ✅ each size stock
   });
-
+console.log('stock',details)
   // ✅ Image zoom handlers
   const handleMouseMove = (e) => {
     const rect = imgRef.current.getBoundingClientRect();

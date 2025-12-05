@@ -158,14 +158,19 @@ useEffect(() => {
       productId: item.id,
       name: item.name,
       code: item.code,
+      quantity:item.quantity,
+      size:item.size
     
      
-    }));
+    })); 
     }else{
       filteredCarts={
           productId: Singleproduct._id,
       name: Singleproduct.name,
       code: Singleproduct.code,
+      quantity:Singleproduct.quantity,
+      size:Singleproduct.size,
+      
     
       }
     }

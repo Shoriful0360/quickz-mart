@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decreaseQty, increaseQty, removeFromCart } from '../../redux/cartsSlice';
 import { useSearchParams } from 'next/navigation';
+import Swal from 'sweetalert2';
 
-export default function OrderSummary({ setTotalProductPrice, Singleproduct }) {
+export default function OrderSummary({ setTotalProductPrice, Singleproduct,setSingleProducts }) {
   const carts = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
@@ -13,6 +14,8 @@ export default function OrderSummary({ setTotalProductPrice, Singleproduct }) {
   const quantity = Number(searchParams.get('quantity') || 1);
   const [products, setProducts] = useState([]);
   const [deliveryArea, setDeliveryArea] = useState('dhaka');
+  const [selectedSize, setSelectedSize] = useState(null);
+    const [availableStock, setAvailableStock] = useState(null)
 
   const dhakaCharge = 50;
   const outsideCharge = 150;
@@ -53,21 +56,42 @@ useEffect(() => {
 }, [Singleproduct, carts]);
 
 
+const handleSizeSelect = (size) => {
+    setSelectedSize(size)
+    setSingleProducts((prev) => ({ ...prev, size }));
+        setAvailableStock(Singleproduct.stock[size]); 
+  };
+
 // update quantity
 // Increase / Decrease handler
 // Increase / Decrease handler
-const handleUpdateQty = (type, id) => {
-  setProducts(prev =>
-    prev.map(item => {
-      if (item._id === id) { // MongoDB _id ব্যবহার
-        const currentQty = item.quantity || 1;
-        const newQty = type === "+" ? currentQty + 1 : Math.max(1, currentQty - 1);
-        return { ...item, quantity: newQty }; // quantity শুধু UI এর জন্য update
+const handleUpdateQty = (type) => {
+  setSingleProducts((prev) => {
+    const currentQty = prev.quantity || 1;
+    const stockQty = prev.stock?.[prev.size] ?? 0;
+
+    let newQty = currentQty;
+
+    if (type === "+") {
+      if (currentQty+1 > stockQty) {
+        Swal.fire({
+          icon: "error",
+          title: "Stock Limit Reached",
+          text: `Only ${stockQty} items available.`,
+        });
+        return prev; // stop update
       }
-      return item;
-    })
-  );
+      newQty = currentQty + 1;
+    }
+
+    if (type === "-") {
+      newQty = Math.max(1, currentQty - 1);
+    }
+
+    return { ...prev, quantity: newQty };
+  });
 };
+
 
 
   // 🔹 Calculations
@@ -125,19 +149,62 @@ const handleUpdateQty = (type, id) => {
                 </div>
               )}
 
-              {/* if get but id */}
-                 {buyId && (
-                <div className="flex items-center gap-2 mt-2">
-                  <button onClick={()=>handleUpdateQty('-',item._id)}  className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition">-</button>
-                  <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">{item.quantity}</span>
-                  <button onClick={()=>handleUpdateQty('+',item._id)}  className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition">+</button>
-                </div>
-              )}
+            
             </div>
           </div>
         ))}
       </div>
-
+       {/* if get but id */}
+                 {buyId && (
+                  <>
+                  
+                {/* <div className="flex items-center gap-2 mt-2">
+                  <button onClick={()=>handleUpdateQty('-',item._id)}  className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition">-</button>
+                  <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">{item.quantity}</span>
+                  <button onClick={()=>handleUpdateQty('+',item._id)}  className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition">+</button>
+                </div> */}
+                    <div className="flex gap-3 flex-wrap mt-4">
+        {["m", "l", "xl", "xxl"].map((s) => (
+          <span
+            key={s}
+            onClick={() => handleSizeSelect(s)}
+             className={`px-4 py-2 border rounded-lg cursor-pointer text-sm sm:text-base transition ${
+              selectedSize === s
+                ? "bg-black text-white border-black"
+                : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-400 dark:border-gray-500"
+            }`}
+          >
+            {s.toUpperCase()}{" "}
+            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+              ({Singleproduct?.stock[s]} in stock)
+            </span>
+          </span>
+        ))}
+      </div>
+       {/* নির্বাচিত সাইজ অনুযায়ী stock info */}
+      {selectedSize && (
+        <div className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+          ✅ Selected Size:{" "}
+          <span className="font-semibold">{selectedSize.toUpperCase()}</span> —{" "}
+          <span className="text-blue-500">{availableStock}</span> in stock
+        </div>
+      )}
+      
+          {/* 🧮 Quantity */}
+          {selectedSize && (
+            <div className="space-y-3 mt-4">
+              <p className="font-semibold text-base sm:text-lg">
+                Quantity for <span className="uppercase">{selectedSize}</span>:
+              </p>
+             <div className="flex items-center gap-2 mt-2">
+                  <button onClick={()=>handleUpdateQty('-')}  className="px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition">-</button>
+                  <span className="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">{Singleproduct?.quantity || 1}</span>
+                  <button onClick={()=>handleUpdateQty('+')}   className="px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition">+</button>
+                </div>
+            </div>
+          )}
+                </>
+              )}
       {/* Pricing details */}
       <div className="mt-6 space-y-3 text-gray-700 dark:text-gray-300">
         <div className="flex justify-between">

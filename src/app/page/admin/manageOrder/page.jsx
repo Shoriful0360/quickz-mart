@@ -1,4 +1,5 @@
 'use client'
+import PrivateRoute from '@/app/route/PrivateRoute';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import React, { useEffect, useState } from 'react';
@@ -60,7 +61,9 @@ const handleChange = async (rowIndex, value) => {
   };
 
   return (
-    <div className='mt-10 max-w-7xl mx-auto'>
+    
+  <PrivateRoute>
+      <div className='mt-10 max-w-7xl mx-auto'>
       <Table>
         <TableCaption>A List of Customer Order List</TableCaption>
 
@@ -70,6 +73,9 @@ const handleChange = async (rowIndex, value) => {
             <TableHead>Customer Name</TableHead>
             <TableHead>Address</TableHead>
             <TableHead>Mobile</TableHead>
+            <TableHead>Product Name</TableHead>
+            <TableHead>size</TableHead>
+            <TableHead>Quantity</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
@@ -83,8 +89,36 @@ const handleChange = async (rowIndex, value) => {
               <TableCell>{order.userInfo.firstName} {order.userInfo.lastName}</TableCell>
               <TableCell>{order.userInfo.address}</TableCell>
               <TableCell>{order.userInfo.phone}</TableCell>
-              <TableCell>Tk {order.price}</TableCell>
+              
+         {/* Products Info */}
+         {/* product name */}
+  <TableCell>
+    {(Array.isArray(order.ProductsInfo) ? order.ProductsInfo : [order.ProductsInfo])
+      .map((p, i) => (
+        <div key={i}>{p.name}</div>
+      ))
+    }
+  </TableCell>
+{/* size */}
+  <TableCell>
+    {(Array.isArray(order.ProductsInfo) ? order.ProductsInfo : [order.ProductsInfo])
+      .map((p, i) => (
+        <div key={i}>{p.size || "-"}</div>
+      ))
+    }
+  </TableCell>
+{/* quantity */}
+  <TableCell>
+    {(Array.isArray(order.ProductsInfo) ? order.ProductsInfo : [order.ProductsInfo])
+      .map((p, i) => (
+        <div key={i}>{p.quantity || "-"}</div>
+      ))
+    }
+  </TableCell>
+  {/* amount */}
 
+<TableCell>Tk {order.price}</TableCell>
+{/* status */}
               <TableCell>
                 <NativeSelect
               
@@ -105,6 +139,7 @@ const handleChange = async (rowIndex, value) => {
         </TableBody>
       </Table>
     </div>
+  </PrivateRoute>
   );
 };
 

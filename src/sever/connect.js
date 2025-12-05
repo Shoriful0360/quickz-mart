@@ -21,6 +21,7 @@ clientPromise = global._mongoClientPromise;
 export const collectionNameObj = {
   productCollection: "products",
   orderCollection: "Orders",
+  userCollection:"users"
 };
 
 export default async function dbConnect(collection) {

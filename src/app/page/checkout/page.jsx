@@ -25,11 +25,11 @@ fetch(`/api/products?id=${buyId}`)
      
          {/* order summary */}
    <div className='lg:order-2'>
-      <OrderSummary setTotalProductPrice={setTotalProductPrice} Singleproduct={product} />
+      <OrderSummary setTotalProductPrice={setTotalProductPrice} Singleproduct={product} setSingleProducts={setProducts} />
    </div>
      <div className='md:col-span-2  '>
         {/* form */}
-           <CheckoutForm totalProductPrice={totalProductPrice} Singleproduct={product} />
+           <CheckoutForm totalProductPrice={totalProductPrice} Singleproduct={product}  />
      </div>
  
     </div>
