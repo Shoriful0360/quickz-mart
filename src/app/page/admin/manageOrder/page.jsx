@@ -1,4 +1,5 @@
 'use client'
+import AdminPrivateRoute from '@/app/route/AdminPrivateRoute';
 import PrivateRoute from '@/app/route/PrivateRoute';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -62,7 +63,8 @@ const handleChange = async (rowIndex, value) => {
 
   return (
     
-  <PrivateRoute>
+<AdminPrivateRoute>
+    <PrivateRoute>
       <div className='mt-10 max-w-7xl mx-auto'>
       <Table>
         <TableCaption>A List of Customer Order List</TableCaption>
@@ -140,6 +142,7 @@ const handleChange = async (rowIndex, value) => {
       </Table>
     </div>
   </PrivateRoute>
+</AdminPrivateRoute>
   );
 };
 

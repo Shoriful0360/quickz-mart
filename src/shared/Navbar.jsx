@@ -17,6 +17,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { IoMdMenu } from "react-icons/io"
 import { MdOutlineShoppingCartCheckout } from "react-icons/md"
+import { useRole } from "@/app/hook/useCart"
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -27,6 +28,7 @@ export default function Navbar() {
   const [darkmode, setDarkmode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isClient, setIsClient] = useState(false)
+const role=useRole()
 
   // Set client-side rendering
   useEffect(() => {
@@ -64,7 +66,7 @@ export default function Navbar() {
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
     user? { href: "/page/dashboard", label: "Dashboard", }:'',
-     { href: "/page/admin/manageOrder", label: "Order List" }
+     role?.role==="admin"?{ href: "/page/admin/manageOrder", label: "Order List" }:""
  
   ]
 
