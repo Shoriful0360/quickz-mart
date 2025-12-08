@@ -1,6 +1,6 @@
 'use client'
 import { Users, Package, ShoppingBag, DollarSign, BarChart3 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -12,21 +12,16 @@ import {
 
 export default function AdminDashboard() {
   const [selectedDate, setSelectedDate] = useState("");
+  const[stats,setStates]=useState()
 
-  const data = [
-    { day: "Jan", revenue: 300, orders: 20 },
-    { day: "Feb", revenue: 450, orders: 34 },
-    { day: "Mar", revenue: 600, orders: 40 },
-    { day: "Apr", revenue: 500, orders: 29 },
-    { day: "May", revenue: 700, orders: 50 },
-    { day: "June", revenue: 700, orders: 50 },
-    { day: "July", revenue: 700, orders: 50 },
-    { day: "Aug", revenue: 700, orders: 50 },
-    { day: "Sept", revenue: 700, orders: 50 },
-    { day: "Oct", revenue: 700, orders: 50 },
-    { day: "Nov", revenue: 700, orders: 50 },
-    { day: "Dec", revenue: 700, orders: 50 },
-  ];
+
+useEffect(()=>{
+  fetch('/api/adminDashboard')
+  .then(res=>res.json())
+  .then((data)=>setStates(data))
+
+},[]) 
+
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 dark:text-gray-100 min-h-screen p-6 transition-all duration-300">
@@ -48,12 +43,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
         {[
-          { icon: <Users className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />, title: "Total Users", value: "1200" },
-          { icon: <Package className="w-10 h-10 text-blue-600 dark:text-blue-400" />, title: "Total Products", value: "350" },
-          { icon: <ShoppingBag className="w-10 h-10 text-green-600 dark:text-green-400" />, title: "New Orders", value: "89" },
-          { icon: <DollarSign className="w-10 h-10 text-yellow-500 dark:text-yellow-300" />, title: "Revenue", value: "$4,500" },
+          { icon: <Users className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />, title: "Total Users", value: stats?.users ||0},
+          { icon: <Package className="w-10 h-10 text-blue-600 dark:text-blue-400" />, title: "Total Products", value:stats?.products ||0 },
+          { icon: <ShoppingBag className="w-10 h-10 text-green-600 dark:text-green-400" />, title: "Total Orders", value: stats?.orders ||0 },
+          { icon: <ShoppingBag className="w-10 h-10 text-green-600 dark:text-green-400" />, title: "New Orders", value: stats?.todayOrder  ||0},
+          { icon: <DollarSign className="w-10 h-10 text-yellow-500 dark:text-yellow-300" />, title: "Revenue", value:`$${stats?.revenue ||0}`  },
         ].map((card, index) => (
           <div
             key={index}
@@ -76,8 +72,8 @@ export default function AdminDashboard() {
 
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} barSize={28}>
-              <XAxis dataKey="day" stroke="currentColor" className="text-sm" />
+            <BarChart data={stats?.monthlyChart} barSize={28}>
+              <XAxis dataKey="month" stroke="currentColor" className="text-sm" />
               <YAxis stroke="currentColor" className="text-sm" />
               <Tooltip
                 contentStyle={{
