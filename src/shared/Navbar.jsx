@@ -65,7 +65,8 @@ const role=useRole()
     { href: "/page/shirt", label: "Shirt" },
     { href: "/page/pant&trouser", label: "Pant & Trouser" },
     { href: "/page/t_shirt", label: "T-Shirt" },
-    user? { href: "/page/dashboard", label: "Dashboard", }:'',
+    user && role?.role!=='admin' ? { href: "/page/dashboard", label: "Dashboard", }:'',
+    user && role?.role==='admin' ? { href: "/page/admin/dashboard", label: "Dashboard", }:'',
      role?.role==="admin"?{ href: "/page/admin/manageOrder", label: "Order List" }:""
  
   ]
