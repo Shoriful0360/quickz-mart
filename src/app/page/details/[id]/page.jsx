@@ -7,7 +7,7 @@ import React from 'react'
 import ProductInfo from './component/ProductInfo';
 import ProductCard from '../../home/component/Card';
 export default async function DetailsPage({params}) {
- const {id}= params
+ const {id}=await params
 
 
   const product=await dbConnect(collectionNameObj.productCollection)
